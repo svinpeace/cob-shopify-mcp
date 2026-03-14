@@ -17,6 +17,60 @@ Production-grade MCP server **and** CLI tool for Shopify. Use it as an MCP serve
 - **Config-driven** — YAML config, env vars, CLI overrides
 - **Type-safe** — Full TypeScript with Zod validation
 
+## Use Cases
+
+```mermaid
+flowchart LR
+    subgraph AGENTS["Your AI Layer"]
+        direction TB
+        SALES["Sales Assistant"]
+        SUPPORT["Customer Support Bot"]
+        WAREHOUSE["Warehouse Manager"]
+        SHIPPING["Shipping Tracker"]
+        BI["Business Intelligence"]
+        AUTO["Automation Workflows"]
+    end
+
+    MCP["cob-shopify-mcp\n49 tools · 4 resources · 4 prompts"]
+
+    SHOPIFY["Shopify Store"]
+
+    AGENTS --> MCP --> SHOPIFY
+```
+
+| Role | What it does | Tools used |
+|------|-------------|------------|
+| **Sales Assistant** | Answer product questions, check inventory, create draft orders, look up customer history and lifetime value | `search_products`, `get_product`, `list_inventory_levels`, `create_draft_order`, `get_customer_lifetime_value` |
+| **Customer Support Bot** | Look up orders by name/number, track fulfillment, view timeline, pull customer details | `get_order_by_name`, `get_order_fulfillment_status`, `get_order_timeline`, `get_customer`, `get_customer_orders` |
+| **Warehouse Manager** | Monitor stock levels, get low-stock alerts, adjust inventory, check location inventory | `low_stock_report`, `list_inventory_levels`, `adjust_inventory`, `set_inventory_level`, `get_location_inventory` |
+| **Shipping Executive** | Track fulfillment status, view order details, update order notes/tags | `get_order_fulfillment_status`, `list_orders`, `add_order_note`, `update_order_tags` |
+| **Business Intelligence** | Sales summaries, top products, refund rates, repeat customer analysis, inventory risk | `sales_summary`, `top_products`, `refund_rate_summary`, `repeat_customer_rate`, `inventory_risk_report` |
+| **Automation Pipeline** | Bulk product updates, tag management, order processing, customer segmentation | `update_product`, `manage_product_tags`, `add_order_tag`, `add_customer_tag`, `create_product` |
+
+### Integration Patterns
+
+**1. Direct MCP (simplest)** — Claude, Cursor, or any MCP client connects directly:
+```
+AI Agent → MCP Protocol → cob-shopify-mcp → Shopify API
+```
+
+**2. Agent Orchestration Layer** — Your custom agent framework uses MCP as the Shopify bridge:
+```
+User → Your App → Agent Layer (LangChain, CrewAI, etc.) → MCP Client → cob-shopify-mcp → Shopify API
+```
+
+**3. RAG + MCP** — Combine retrieval-augmented generation with live Shopify data:
+```
+User → Your App → RAG (product docs, policies, FAQs) + MCP (live store data) → Response
+```
+
+**4. Multi-Agent System** — Multiple specialized agents share one MCP server:
+```
+Sales Agent    ─┐
+Support Agent  ─┤→ cob-shopify-mcp (HTTP transport) → Shopify API
+Warehouse Agent─┘
+```
+
 ## Quick Start
 
 > **First:** Complete [Getting Shopify Credentials](#getting-shopify-credentials) below to get your Client ID, Client Secret, and store domain. Then come back here.

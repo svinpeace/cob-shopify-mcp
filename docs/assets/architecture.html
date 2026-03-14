@@ -719,6 +719,7 @@
       <a href="#shell" class="nav-link" data-section="shell">Shopify Shell</a>
       <a href="#flow" class="nav-link" data-section="flow">Data Flow</a>
       <a href="#tiers" class="nav-link" data-section="tiers">Tier System</a>
+      <a href="#usecases" class="nav-link" data-section="usecases">Use Cases</a>
     </div>
   </nav>
 
@@ -1376,6 +1377,131 @@ flowchart LR
     style T3 fill:#162d50,stroke:#3b82f6,stroke-width:2px,color:#e0e0e0
     style CF fill:#1a1a2e,stroke:#a78bfa,stroke-width:2px,color:#e0e0e0
     style REG fill:#1a1a2e,stroke:#6c63ff,stroke-width:2px,color:#e0e0e0
+          </pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════════ -->
+  <!-- SECTION 7: Use Cases                                         -->
+  <!-- ══════════════════════════════════════════════════════════════ -->
+  <section class="section" id="usecases" style="background: radial-gradient(ellipse at 50% 0%, var(--glow-purple) 0%, transparent 60%), var(--bg-section-2);">
+    <div class="section-inner">
+      <div class="section-head reveal">
+        <div class="section-label">06 &mdash; Use Cases</div>
+        <h2 class="section-title">Who Uses This &amp; How</h2>
+        <p class="section-subtitle">From AI chatbots to multi-agent orchestration — every team in an ecommerce business can leverage cob-shopify-mcp as their Shopify brain.</p>
+      </div>
+
+      <!-- Role cards -->
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.5rem;margin-top:2.5rem;">
+        <div class="card reveal reveal-delay-1" style="border-left:3px solid var(--green);">
+          <div class="card-icon">🛒</div>
+          <h3 class="card-title">Sales Assistant</h3>
+          <div class="card-desc">AI agent that helps sales reps answer product questions, check real-time inventory, create draft orders, and pull customer lifetime value — all through natural conversation.</div>
+          <div style="margin-top:0.75rem;display:flex;flex-wrap:wrap;gap:0.4rem;">
+            <span style="background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:0.15rem 0.5rem;font-size:0.7rem;color:var(--text-muted);">search_products</span>
+            <span style="background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:0.15rem 0.5rem;font-size:0.7rem;color:var(--text-muted);">list_inventory_levels</span>
+            <span style="background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:0.15rem 0.5rem;font-size:0.7rem;color:var(--text-muted);">create_draft_order</span>
+            <span style="background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:0.15rem 0.5rem;font-size:0.7rem;color:var(--text-muted);">get_customer_lifetime_value</span>
+          </div>
+        </div>
+        <div class="card reveal reveal-delay-1" style="border-left:3px solid var(--blue);">
+          <div class="card-icon">🎧</div>
+          <h3 class="card-title">Customer Support Bot</h3>
+          <div class="card-desc">Look up orders by name or number, track fulfillment status, view order timeline, pull customer details and order history — resolve tickets faster with live data.</div>
+          <div style="margin-top:0.75rem;display:flex;flex-wrap:wrap;gap:0.4rem;">
+            <span style="background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:0.15rem 0.5rem;font-size:0.7rem;color:var(--text-muted);">get_order_by_name</span>
+            <span style="background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:0.15rem 0.5rem;font-size:0.7rem;color:var(--text-muted);">get_order_fulfillment_status</span>
+            <span style="background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:0.15rem 0.5rem;font-size:0.7rem;color:var(--text-muted);">get_customer_orders</span>
+          </div>
+        </div>
+        <div class="card reveal reveal-delay-2" style="border-left:3px solid var(--orange);">
+          <div class="card-icon">📦</div>
+          <h3 class="card-title">Warehouse Manager</h3>
+          <div class="card-desc">Monitor stock levels across locations, get low-stock alerts, adjust quantities, and generate inventory risk reports — keep the warehouse running smoothly.</div>
+          <div style="margin-top:0.75rem;display:flex;flex-wrap:wrap;gap:0.4rem;">
+            <span style="background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:0.15rem 0.5rem;font-size:0.7rem;color:var(--text-muted);">low_stock_report</span>
+            <span style="background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:0.15rem 0.5rem;font-size:0.7rem;color:var(--text-muted);">adjust_inventory</span>
+            <span style="background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:0.15rem 0.5rem;font-size:0.7rem;color:var(--text-muted);">get_location_inventory</span>
+          </div>
+        </div>
+        <div class="card reveal reveal-delay-2" style="border-left:3px solid var(--cyan);">
+          <div class="card-icon">🚚</div>
+          <h3 class="card-title">Shipping Executive</h3>
+          <div class="card-desc">Track fulfillment across orders, update order notes and tags for logistics workflows, monitor delivery status at scale.</div>
+          <div style="margin-top:0.75rem;display:flex;flex-wrap:wrap;gap:0.4rem;">
+            <span style="background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:0.15rem 0.5rem;font-size:0.7rem;color:var(--text-muted);">get_order_fulfillment_status</span>
+            <span style="background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:0.15rem 0.5rem;font-size:0.7rem;color:var(--text-muted);">add_order_note</span>
+            <span style="background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:0.15rem 0.5rem;font-size:0.7rem;color:var(--text-muted);">update_order_tags</span>
+          </div>
+        </div>
+        <div class="card reveal reveal-delay-3" style="border-left:3px solid var(--purple);">
+          <div class="card-icon">📊</div>
+          <h3 class="card-title">Business Intelligence</h3>
+          <div class="card-desc">Sales summaries, top-selling products, refund rate analysis, repeat customer metrics, and inventory risk — all accessible to AI agents for automated reporting.</div>
+          <div style="margin-top:0.75rem;display:flex;flex-wrap:wrap;gap:0.4rem;">
+            <span style="background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:0.15rem 0.5rem;font-size:0.7rem;color:var(--text-muted);">sales_summary</span>
+            <span style="background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:0.15rem 0.5rem;font-size:0.7rem;color:var(--text-muted);">top_products</span>
+            <span style="background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:0.15rem 0.5rem;font-size:0.7rem;color:var(--text-muted);">repeat_customer_rate</span>
+          </div>
+        </div>
+        <div class="card reveal reveal-delay-3" style="border-left:3px solid var(--red);">
+          <div class="card-icon">⚡</div>
+          <h3 class="card-title">Automation Pipelines</h3>
+          <div class="card-desc">Bulk product updates, tag management, order processing, customer segmentation — trigger from webhooks, cron jobs, or multi-agent workflows.</div>
+          <div style="margin-top:0.75rem;display:flex;flex-wrap:wrap;gap:0.4rem;">
+            <span style="background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:0.15rem 0.5rem;font-size:0.7rem;color:var(--text-muted);">update_product</span>
+            <span style="background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:0.15rem 0.5rem;font-size:0.7rem;color:var(--text-muted);">manage_product_tags</span>
+            <span style="background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:0.15rem 0.5rem;font-size:0.7rem;color:var(--text-muted);">create_product</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Integration patterns diagram -->
+      <h3 class="section-title reveal" style="font-size:1.4rem;margin-top:3.5rem;">Integration Patterns</h3>
+
+      <div class="diagram-wrap reveal reveal-delay-1" style="margin-top:1.5rem;">
+        <div class="diagram-controls">
+          <button class="diagram-btn" onclick="zoomDiagram('usecase-diagram', 1)">+</button>
+          <button class="diagram-btn" onclick="zoomDiagram('usecase-diagram', -1)">&minus;</button>
+          <button class="diagram-btn" onclick="resetDiagram('usecase-diagram')" style="font-size:0.7rem;">R</button>
+        </div>
+        <div class="diagram-viewport" id="usecase-diagram-vp">
+          <pre class="mermaid" id="usecase-diagram">
+flowchart TB
+    subgraph DIRECT["Pattern 1: Direct MCP"]
+        direction LR
+        D1["Claude / Cursor / Windsurf"] --> D2["MCP Protocol"] --> D3["cob-shopify-mcp"] --> D4["Shopify API"]
+    end
+
+    subgraph AGENT["Pattern 2: Agent Orchestration"]
+        direction LR
+        A1["Your App"] --> A2["Agent Layer\nLangChain · CrewAI · AutoGen"] --> A3["MCP Client"] --> A4["cob-shopify-mcp"] --> A5["Shopify API"]
+    end
+
+    subgraph RAG["Pattern 3: RAG + Live Data"]
+        direction LR
+        R1["User Query"] --> R2["Your App"]
+        R2 --> R3["RAG\nProduct docs · FAQs · Policies"]
+        R2 --> R4["MCP\nLive store data"]
+        R3 --> R5["Combined Response"]
+        R4 --> R5
+    end
+
+    subgraph MULTI["Pattern 4: Multi-Agent System"]
+        direction LR
+        M1["Sales Agent"] --> M4["cob-shopify-mcp\nHTTP transport"]
+        M2["Support Agent"] --> M4
+        M3["Warehouse Agent"] --> M4
+        M4 --> M5["Shopify API"]
+    end
+
+    style DIRECT fill:#0f3425,stroke:#10b981,stroke-width:2px,color:#e0e0e0
+    style AGENT fill:#162d50,stroke:#3b82f6,stroke-width:2px,color:#e0e0e0
+    style RAG fill:#2d1b40,stroke:#8b5cf6,stroke-width:2px,color:#e0e0e0
+    style MULTI fill:#1a2540,stroke:#06b6d4,stroke-width:2px,color:#e0e0e0
           </pre>
         </div>
       </div>
