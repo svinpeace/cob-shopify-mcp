@@ -1,0 +1,73 @@
+{
+	"name": "cob-shopify-mcp",
+	"version": "0.1.0",
+	"description": "Production-grade MCP server for Shopify Admin GraphQL API",
+	"type": "module",
+	"engines": {
+		"node": ">=22"
+	},
+	"bin": {
+		"cob-shopify-mcp": "./dist/cli/index.js"
+	},
+	"exports": {
+		".": {
+			"import": "./dist/index.js",
+			"types": "./dist/index.d.ts"
+		}
+	},
+	"scripts": {
+		"dev": "tsup --watch",
+		"build": "tsup",
+		"test": "vitest run",
+		"test:integration": "vitest run --config vitest.integration.config.ts",
+		"test:watch": "vitest",
+		"lint": "biome check .",
+		"lint:fix": "biome check --fix .",
+		"typecheck": "tsc --noEmit"
+	},
+	"dependencies": {
+		"@modelcontextprotocol/sdk": "^1.27.1",
+		"@shopify/admin-api-client": "^1.1.2",
+		"@shopify/shopify-api": "^13.0.0",
+		"citty": "^0.2.1",
+		"consola": "^3.4.2",
+		"dotenv": "^17.3.1",
+		"open": "^11.0.0",
+		"pino": "^10.3.1",
+		"yaml": "^2.8.2",
+		"zod": "^3.24.2"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "^2.4.7",
+		"@types/better-sqlite3": "^7.6.13",
+		"@types/node": "^22.10.0",
+		"tsup": "^8.5.1",
+		"typescript": "^5.9.3",
+		"vitest": "^4.1.0"
+	},
+	"optionalDependencies": {
+		"better-sqlite3": "^12.6.2"
+	},
+	"keywords": [
+		"shopify",
+		"mcp",
+		"model-context-protocol",
+		"graphql",
+		"ai",
+		"llm",
+		"automation",
+		"admin-api",
+		"ecommerce"
+	],
+	"author": "COB (https://github.com/callobuzz)",
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/svinpeace/cob-shopify-mcp.git"
+	},
+	"files": [
+		"dist",
+		"README.md",
+		"LICENSE"
+	]
+}

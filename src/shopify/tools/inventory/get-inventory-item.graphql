@@ -1,0 +1,26 @@
+query GetInventoryItem($id: ID!) {
+  inventoryItem(id: $id) {
+    id
+    sku
+    tracked
+    createdAt
+    updatedAt
+    countryCodeOfOrigin
+    harmonizedSystemCode
+    inventoryLevels(first: 50) {
+      edges {
+        node {
+          id
+          location {
+            id
+            name
+          }
+          quantities(names: ["available", "committed", "on_hand", "incoming"]) {
+            name
+            quantity
+          }
+        }
+      }
+    }
+  }
+}

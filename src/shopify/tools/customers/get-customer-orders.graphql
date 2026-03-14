@@ -1,0 +1,27 @@
+query GetCustomerOrders($id: ID!, $first: Int!, $after: String) {
+  customer(id: $id) {
+    id
+    displayName
+    orders(first: $first, after: $after) {
+      edges {
+        node {
+          id
+          name
+          createdAt
+          displayFinancialStatus
+          displayFulfillmentStatus
+          totalPriceSet {
+            shopMoney {
+              amount
+              currencyCode
+            }
+          }
+        }
+      }
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+    }
+  }
+}

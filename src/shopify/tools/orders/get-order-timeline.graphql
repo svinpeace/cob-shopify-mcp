@@ -1,0 +1,15 @@
+query GetOrderTimeline($id: ID!) {
+  order(id: $id) {
+    id
+    name
+    events(first: 50) {
+      edges {
+        node {
+          id
+          createdAt
+          message
+        }
+      }
+    }
+  }
+}

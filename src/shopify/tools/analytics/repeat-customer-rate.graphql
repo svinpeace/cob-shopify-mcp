@@ -1,0 +1,16 @@
+query RepeatCustomerRate($first: Int!, $query: String, $after: String) {
+  orders(first: $first, query: $query, after: $after) {
+    edges {
+      node {
+        id
+        customer {
+          id
+        }
+      }
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}

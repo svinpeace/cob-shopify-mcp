@@ -1,0 +1,28 @@
+query GetInventoryBySku($query: String!, $first: Int!) {
+  inventoryItems(first: $first, query: $query) {
+    edges {
+      node {
+        id
+        sku
+        tracked
+        createdAt
+        updatedAt
+        inventoryLevels(first: 10) {
+          edges {
+            node {
+              id
+              location {
+                id
+                name
+              }
+              quantities(names: ["available", "committed", "on_hand"]) {
+                name
+                quantity
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

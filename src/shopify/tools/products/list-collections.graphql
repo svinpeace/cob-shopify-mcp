@@ -1,0 +1,24 @@
+query ListCollections($first: Int!, $after: String) {
+  collections(first: $first, after: $after) {
+    edges {
+      node {
+        id
+        title
+        handle
+        descriptionHtml
+        productsCount {
+          count
+        }
+        image {
+          url
+          altText
+        }
+        updatedAt
+      }
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}

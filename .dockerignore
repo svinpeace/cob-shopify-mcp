@@ -1,0 +1,57 @@
+# =============================================================================
+# .dockerignore — cob-shopify-mcp
+# Author: SV
+# Keep the build context lean; only the source files needed by the builder
+# stage are sent to the Docker daemon.
+# =============================================================================
+
+# Version control
+.git
+.gitignore
+.github
+
+# Dependencies (builder stage installs its own)
+node_modules
+
+# Compiled output (builder stage produces its own)
+dist
+
+# Environment / secrets — never bake into the image
+.env
+.env.*
+*.pem
+*.key
+
+# Local data / storage
+data
+.cob-shopify-mcp
+
+# Test files and coverage
+coverage
+**/*.test.ts
+**/*.spec.ts
+**/*.integration.test.ts
+vitest.config.ts
+vitest.integration.config.ts
+
+# Documentation
+docs
+*.md
+LICENSE
+
+# Editor / IDE
+.vscode
+.idea
+*.swp
+*.swo
+
+# OS artefacts
+.DS_Store
+Thumbs.db
+
+# Build tooling artefacts
+*.tsbuildinfo
+
+# Docker files themselves (not needed inside the build context)
+docker-compose*.yml
+.dockerignore

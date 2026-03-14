@@ -1,0 +1,29 @@
+query ListCustomers($first: Int!, $after: String) {
+  customers(first: $first, after: $after) {
+    edges {
+      node {
+        id
+        displayName
+        defaultEmailAddress {
+          emailAddress
+        }
+        defaultPhoneNumber {
+          phoneNumber
+        }
+        numberOfOrders
+        amountSpent {
+          amount
+          currencyCode
+        }
+        tags
+        state
+        createdAt
+        updatedAt
+      }
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}

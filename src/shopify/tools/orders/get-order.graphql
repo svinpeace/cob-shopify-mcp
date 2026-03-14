@@ -1,0 +1,83 @@
+query GetOrder($id: ID!) {
+  order(id: $id) {
+    id
+    name
+    createdAt
+    updatedAt
+    displayFinancialStatus
+    displayFulfillmentStatus
+    totalPriceSet {
+      shopMoney {
+        amount
+        currencyCode
+      }
+    }
+    subtotalPriceSet {
+      shopMoney {
+        amount
+        currencyCode
+      }
+    }
+    totalTaxSet {
+      shopMoney {
+        amount
+        currencyCode
+      }
+    }
+    totalShippingPriceSet {
+      shopMoney {
+        amount
+        currencyCode
+      }
+    }
+    customer {
+      id
+      displayName
+      defaultEmailAddress {
+        emailAddress
+      }
+    }
+    lineItems(first: 50) {
+      edges {
+        node {
+          title
+          quantity
+          sku
+          variantTitle
+          originalUnitPriceSet {
+            shopMoney {
+              amount
+              currencyCode
+            }
+          }
+        }
+      }
+    }
+    fulfillments {
+      status
+      trackingInfo {
+        number
+        url
+        company
+      }
+    }
+    shippingAddress {
+      address1
+      address2
+      city
+      province
+      zip
+      country
+    }
+    billingAddress {
+      address1
+      address2
+      city
+      province
+      zip
+      country
+    }
+    note
+    tags
+  }
+}

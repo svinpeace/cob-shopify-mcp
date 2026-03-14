@@ -1,0 +1,10 @@
+query ShopLocations {
+  locations(first: 50) {
+    nodes {
+      id
+      name
+      isActive
+      address { address1 city province country zip }
+    }
+  }
+}

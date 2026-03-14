@@ -1,0 +1,11 @@
+query ShopInfo {
+  shop {
+    name
+    email
+    myshopifyDomain
+    plan { publicDisplayName }
+    ianaTimezone
+    currencyCode
+    primaryDomain { url host }
+  }
+}

@@ -1,0 +1,9 @@
+query ShopPolicies {
+  shop {
+    shopPolicies {
+      title
+      body
+      type
+    }
+  }
+}

@@ -1,0 +1,65 @@
+# =============================================================================
+# cob-shopify-mcp — Docker Compose (local dev / smoke-testing)
+# Author: SV
+# =============================================================================
+# Usage:
+#   cp .env.example .env          # fill in SHOPIFY_* credentials
+#   docker compose up --build
+#
+# The MCP server will be reachable at http://localhost:3000 over HTTP transport.
+# For stdio transport (Claude Desktop), run the CLI directly without Docker.
+# =============================================================================
+
+services:
+  shopify-mcp:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: runtime
+    image: cob-shopify-mcp:local
+    container_name: cob-shopify-mcp
+
+    ports:
+      - "3000:3000"
+
+    # .env provides SHOPIFY_ACCESS_TOKEN, SHOPIFY_STORE_DOMAIN, etc.
+    # env_file values are overridden by the explicit environment block below.
+    env_file:
+      - .env
+
+    environment:
+      # Transport — always HTTP inside the container
+      COB_SHOPIFY_TRANSPORT: "http"
+      COB_SHOPIFY_HOST: "0.0.0.0"
+      COB_SHOPIFY_PORT: "3000"
+      NODE_ENV: "production"
+
+    volumes:
+      # Persist JSON/SQLite storage outside the container
+      - ./data:/app/data
+
+    # Container-level resource limits (adjust for your VPS size)
+    deploy:
+      resources:
+        limits:
+          cpus: "0.50"
+          memory: 256M
+        reservations:
+          cpus: "0.10"
+          memory: 64M
+
+    restart: unless-stopped
+
+    # Mirror the HEALTHCHECK defined in the Dockerfile
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 5s
+      start_period: 15s
+      retries: 3
+
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"

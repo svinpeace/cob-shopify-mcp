@@ -1,0 +1,45 @@
+query GetCustomer($id: ID!) {
+  customer(id: $id) {
+    id
+    displayName
+    firstName
+    lastName
+    defaultEmailAddress {
+      emailAddress
+    }
+    defaultPhoneNumber {
+      phoneNumber
+    }
+    numberOfOrders
+    amountSpent {
+      amount
+      currencyCode
+    }
+    tags
+    note
+    state
+    createdAt
+    updatedAt
+    defaultAddress {
+      id
+      address1
+      address2
+      city
+      province
+      country
+      zip
+      phone
+    }
+    addressesV2(first: 10) {
+      nodes {
+        address1
+        address2
+        city
+        province
+        country
+        zip
+        phone
+      }
+    }
+  }
+}

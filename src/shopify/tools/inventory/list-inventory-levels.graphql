@@ -1,0 +1,30 @@
+query ListInventoryLevels($first: Int!, $after: String) {
+  inventoryItems(first: $first, after: $after) {
+    edges {
+      node {
+        id
+        sku
+        tracked
+        inventoryLevels(first: 50) {
+          edges {
+            node {
+              id
+              location {
+                id
+                name
+              }
+              quantities(names: ["available", "committed", "on_hand", "incoming"]) {
+                name
+                quantity
+              }
+            }
+          }
+        }
+      }
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}

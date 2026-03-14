@@ -1,0 +1,17 @@
+mutation CollectionCreate($input: CollectionInput!) {
+  collectionCreate(input: $input) {
+    collection {
+      id
+      title
+      handle
+      descriptionHtml
+      productsCount {
+        count
+      }
+    }
+    userErrors {
+      field
+      message
+    }
+  }
+}

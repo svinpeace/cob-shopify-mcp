@@ -1,0 +1,38 @@
+query ListProducts($first: Int!, $query: String, $after: String) {
+  products(first: $first, query: $query, after: $after) {
+    edges {
+      node {
+        id
+        title
+        handle
+        status
+        vendor
+        productType
+        totalInventory
+        featuredMedia {
+          ... on MediaImage {
+            image {
+              url
+              altText
+            }
+          }
+        }
+        variants(first: 10) {
+          edges {
+            node {
+              id
+              title
+              price
+              sku
+              inventoryQuantity
+            }
+          }
+        }
+      }
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}

@@ -1,0 +1,27 @@
+query ListProductVariants($id: ID!, $first: Int!, $after: String) {
+  product(id: $id) {
+    id
+    title
+    variants(first: $first, after: $after) {
+      edges {
+        node {
+          id
+          title
+          price
+          compareAtPrice
+          sku
+          barcode
+          inventoryQuantity
+          selectedOptions {
+            name
+            value
+          }
+        }
+      }
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+    }
+  }
+}

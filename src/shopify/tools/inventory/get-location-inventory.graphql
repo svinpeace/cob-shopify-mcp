@@ -1,0 +1,26 @@
+query GetLocationInventory($id: ID!, $first: Int!, $after: String) {
+  location(id: $id) {
+    id
+    name
+    inventoryLevels(first: $first, after: $after) {
+      edges {
+        node {
+          id
+          item {
+            id
+            sku
+            tracked
+          }
+          quantities(names: ["available", "committed", "on_hand", "incoming"]) {
+            name
+            quantity
+          }
+        }
+      }
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+    }
+  }
+}

@@ -1,0 +1,29 @@
+mutation ProductCreate($product: ProductCreateInput!) {
+  productCreate(product: $product) {
+    product {
+      id
+      title
+      handle
+      status
+      vendor
+      productType
+      tags
+      totalInventory
+      variants(first: 10) {
+        edges {
+          node {
+            id
+            title
+            price
+            sku
+            inventoryQuantity
+          }
+        }
+      }
+    }
+    userErrors {
+      field
+      message
+    }
+  }
+}

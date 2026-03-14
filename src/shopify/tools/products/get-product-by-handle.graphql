@@ -1,0 +1,53 @@
+query GetProductByHandle($handle: String!) {
+  productByIdentifier(identifier: { handle: $handle }) {
+    id
+    title
+    handle
+    descriptionHtml
+    status
+    vendor
+    productType
+    tags
+    totalInventory
+    createdAt
+    updatedAt
+    featuredMedia {
+      ... on MediaImage {
+        image {
+          url
+          altText
+        }
+      }
+    }
+    media(first: 10) {
+      edges {
+        node {
+          ... on MediaImage {
+            id
+            image {
+              url
+              altText
+            }
+          }
+        }
+      }
+    }
+    variants(first: 100) {
+      edges {
+        node {
+          id
+          title
+          price
+          compareAtPrice
+          sku
+          barcode
+          inventoryQuantity
+          selectedOptions {
+            name
+            value
+          }
+        }
+      }
+    }
+  }
+}

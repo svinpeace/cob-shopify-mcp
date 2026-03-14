@@ -1,0 +1,41 @@
+query GetCollection($id: ID!) {
+  collection(id: $id) {
+    id
+    title
+    handle
+    descriptionHtml
+    productsCount {
+      count
+    }
+    image {
+      url
+      altText
+    }
+    updatedAt
+    products(first: 25) {
+      edges {
+        node {
+          id
+          title
+          handle
+          status
+          vendor
+          productType
+          totalInventory
+          featuredMedia {
+            ... on MediaImage {
+              image {
+                url
+                altText
+              }
+            }
+          }
+        }
+      }
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+    }
+  }
+}

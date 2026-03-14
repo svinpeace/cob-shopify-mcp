@@ -1,0 +1,54 @@
+query ListOrders($first: Int!, $query: String, $after: String) {
+  orders(first: $first, query: $query, after: $after) {
+    edges {
+      node {
+        id
+        name
+        createdAt
+        displayFinancialStatus
+        displayFulfillmentStatus
+        totalPriceSet {
+          shopMoney {
+            amount
+            currencyCode
+          }
+        }
+        customer {
+          id
+          displayName
+          defaultEmailAddress {
+            emailAddress
+          }
+        }
+        lineItems(first: 10) {
+          edges {
+            node {
+              title
+              quantity
+              sku
+              variantTitle
+              originalUnitPriceSet {
+                shopMoney {
+                  amount
+                  currencyCode
+                }
+              }
+            }
+          }
+        }
+        fulfillments {
+          status
+          trackingInfo {
+            number
+            url
+            company
+          }
+        }
+      }
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}

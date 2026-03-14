@@ -1,0 +1,30 @@
+query GetCustomerLifetimeValue($id: ID!) {
+  customer(id: $id) {
+    id
+    displayName
+    defaultEmailAddress {
+      emailAddress
+    }
+    numberOfOrders
+    amountSpent {
+      amount
+      currencyCode
+    }
+    firstOrder: orders(first: 1, sortKey: CREATED_AT) {
+      edges {
+        node {
+          id
+          createdAt
+        }
+      }
+    }
+    lastOrder: orders(first: 1, sortKey: CREATED_AT, reverse: true) {
+      edges {
+        node {
+          id
+          createdAt
+        }
+      }
+    }
+  }
+}

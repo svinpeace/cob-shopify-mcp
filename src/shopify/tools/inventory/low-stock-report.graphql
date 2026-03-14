@@ -1,0 +1,40 @@
+query LowStockReport($first: Int!, $after: String) {
+  inventoryItems(first: $first, after: $after) {
+    edges {
+      node {
+        id
+        sku
+        tracked
+        variants(first: 1) {
+          nodes {
+            id
+            title
+            displayName
+            product {
+              id
+              title
+            }
+          }
+        }
+        inventoryLevels(first: 50) {
+          edges {
+            node {
+              location {
+                id
+                name
+              }
+              quantities(names: ["available"]) {
+                name
+                quantity
+              }
+            }
+          }
+        }
+      }
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}

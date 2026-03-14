@@ -1,0 +1,29 @@
+query SearchCustomers($first: Int!, $query: String!, $after: String) {
+  customers(first: $first, query: $query, after: $after) {
+    edges {
+      node {
+        id
+        displayName
+        defaultEmailAddress {
+          emailAddress
+        }
+        defaultPhoneNumber {
+          phoneNumber
+        }
+        numberOfOrders
+        amountSpent {
+          amount
+          currencyCode
+        }
+        tags
+        state
+        createdAt
+        updatedAt
+      }
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}

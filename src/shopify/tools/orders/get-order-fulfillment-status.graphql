@@ -1,0 +1,17 @@
+query GetOrderFulfillmentStatus($id: ID!) {
+  order(id: $id) {
+    id
+    name
+    displayFulfillmentStatus
+    fulfillments {
+      id
+      status
+      createdAt
+      trackingInfo {
+        number
+        url
+        company
+      }
+    }
+  }
+}
