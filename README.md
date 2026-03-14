@@ -597,6 +597,66 @@ src/
 └── cli/                # CLI commands (citty + consola)
 ```
 
+## How It Compares
+
+49 tools ship enabled out of the box — but the tool count is **unlimited**. Developers can add any Shopify GraphQL operation as a custom tool using simple YAML files, no TypeScript required:
+
+```yaml
+# my-tools/get-metafields.yaml
+name: get_shop_metafields
+domain: shop
+description: Get shop metafields by namespace
+scopes: [read_metafields]
+input:
+  namespace:
+    type: string
+    description: Metafield namespace
+    required: true
+graphql: |
+  query($namespace: String!) {
+    shop {
+      metafields(first: 10, namespace: $namespace) {
+        edges { node { key value } }
+      }
+    }
+  }
+response:
+  mapping: shop.metafields.edges
+```
+
+Point your config at the directory and they're live:
+
+```yaml
+tools:
+  custom_paths: ["./my-tools/"]
+```
+
+The **3-tier system** gives full control: Tier 1 (enabled by default), Tier 2 (disabled by default, opt-in via config), Tier 3 (custom YAML tools, enabled by default). Plus `tools.enable` / `tools.disable` for granular overrides.
+
+| Feature | **cob-shopify-mcp** | GeLi2001 (147⭐) | pashpashpash (35⭐) | antoineschaller (10⭐) | benwmerritt |
+|---------|:---:|:---:|:---:|:---:|:---:|
+| **Tools** | **49** | 14 | 15 | 22 | 30+ |
+| **MCP Resources** | **4** | 0 | 0 | 0 | 0 |
+| **MCP Prompts** | **4** | 0 | 0 | 0 | 0 |
+| **Auth methods** | **3** (static, client-creds, OAuth) | 2 | 1 | 1 | 2 |
+| **HTTP Transport** | **Streamable HTTP** | No | No | No | No |
+| **Encrypted Storage** | **JSON + SQLite** | No | No | No | No |
+| **Unit Tests** | **397** | ~2 | minimal | 1 | ~2 |
+| **Docker** | **Multi-stage** | No | No | No | No |
+| **Rate Limiter** | **Yes** | No | No | No | No |
+| **Query Cache** | **Yes** | No | No | No | No |
+| **Observability** | **pino + audit + cost** | No | No | No | No |
+| **Config-driven** | **Tier system + YAML** | No | No | No | No |
+
+## Ecosystem
+
+This server manages your store via the **Admin GraphQL API**. Pair it with Shopify's official MCP servers for the complete experience:
+
+| Server | Purpose | Complements cob-shopify-mcp |
+|--------|---------|----------------------------|
+| [`@shopify/dev-mcp`](https://www.npmjs.com/package/@shopify/dev-mcp) | Search Shopify docs, introspect Admin GraphQL schema | Learn the API while this server manages your store |
+| [Storefront MCP](https://shopify.dev/docs/apps/build/storefront-mcp) | Product browsing, cart, checkout (built into every store) | Customer-facing shopping vs admin-side management |
+
 ## License
 
 MIT
