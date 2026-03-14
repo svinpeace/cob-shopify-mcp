@@ -133,6 +133,10 @@ function envVarsToConfig(): Record<string, unknown> {
 	if (process.env.COB_SHOPIFY_ENABLE) {
 		tools.enable = process.env.COB_SHOPIFY_ENABLE.split(",").map((s) => s.trim());
 	}
+	if (process.env.COB_SHOPIFY_ADVERTISE_AND_ACTIVATE) {
+		const val = process.env.COB_SHOPIFY_ADVERTISE_AND_ACTIVATE.toLowerCase();
+		tools.advertise_and_activate = val === "true" || val === "1";
+	}
 	if (Object.keys(tools).length > 0) config.tools = tools;
 
 	if (process.env.COB_SHOPIFY_LOG_LEVEL) {

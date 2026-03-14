@@ -24,6 +24,7 @@ export interface CobConfig {
 		disable: string[];
 		enable: string[];
 		custom_paths: string[];
+		advertise_and_activate: boolean;
 	};
 	transport: {
 		type: "stdio" | "http";
