@@ -21,9 +21,9 @@ export class ShopifyClient {
 	async query(
 		graphql: string,
 		variables?: Record<string, unknown>,
-		queryType?: QueryType,
+		queryType?: string,
 	): Promise<ShopifyQueryResult> {
-		const type = queryType ?? "read";
+		const type = (queryType ?? "read") as QueryType;
 
 		// 1. Check cache (skip for mutations)
 		if (type !== "mutation") {

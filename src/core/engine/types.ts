@@ -20,7 +20,7 @@ export interface ToolDefinition {
 
 export interface ExecutionContext {
 	shopify: {
-		query: (query: string, variables?: Record<string, unknown>) => Promise<any>;
+		query: (query: string, variables?: Record<string, unknown>, queryType?: string) => Promise<any>;
 	};
 	config: CobConfig;
 	storage: StorageBackend;

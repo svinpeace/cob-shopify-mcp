@@ -1,0 +1,20 @@
+query ShopifyQLQuery($query: String!) {
+  shopifyqlQuery(query: $query) {
+    tableData {
+      columns {
+        name
+        dataType
+        displayName
+      }
+      rows
+    }
+    parseErrors {
+      code
+      message
+      range {
+        start { line character }
+        end { line character }
+      }
+    }
+  }
+}
