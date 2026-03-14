@@ -335,8 +335,6 @@ What each scope enables:
 | `read_reports` | Store reports and analytics data |
 | `read_legal_policies` | Store policies (used by shop-policies MCP resource) |
 
-> **Important:** For fulfillment to work, you also need the **"Fulfill and ship orders"** additional permission. On the same configuration page, scroll to **Additional permissions** and enable it.
-
 > For even more scopes (themes, discounts, metafields, gift cards, marketing, returns, etc.) for custom YAML tools, see the **[Custom Tools Guide](custom-tools/README.md#scopes-reference)**.
 
 7. Click **Release** (top-right) to create the app version with these scopes

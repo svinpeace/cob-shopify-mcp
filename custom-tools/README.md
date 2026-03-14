@@ -216,7 +216,6 @@ Your YAML tool's `scopes` field declares what Shopify API scopes are needed. The
 | `read_assigned_fulfillment_orders` | Read fulfillment orders for an order |
 | `write_assigned_fulfillment_orders` | Create fulfillments, update tracking |
 
-**Important:** Fulfillment also requires the **"Fulfill and ship orders"** additional permission in your app settings on dev.shopify.com. This is separate from API scopes.
 
 ### Other Scopes (for custom tools)
 
@@ -255,8 +254,6 @@ Paste this into your app's scopes field on dev.shopify.com:
 ```
 read_products, write_products, read_orders, write_orders, read_all_orders, read_draft_orders, write_draft_orders, read_order_edits, write_order_edits, read_customers, write_customers, read_inventory, write_inventory, read_locations, read_fulfillments, write_fulfillments, read_assigned_fulfillment_orders, write_assigned_fulfillment_orders, read_merchant_managed_fulfillment_orders, write_merchant_managed_fulfillment_orders, read_third_party_fulfillment_orders, write_third_party_fulfillment_orders, read_shipping, read_reports, read_legal_policies
 ```
-
-**Important:** Also enable **"Fulfill and ship orders"** under Additional permissions on the same page.
 
 ### Read-Only Scopes
 
