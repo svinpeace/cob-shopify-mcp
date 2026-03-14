@@ -78,7 +78,7 @@ src/
 pnpm install          # Install dependencies
 pnpm dev              # Start dev server with hot reload
 pnpm build            # Build with tsup (includes action name generation)
-pnpm test             # Run tests with Vitest (561 tests)
+pnpm test             # Run tests with Vitest (573 tests)
 pnpm lint             # Lint with Biome
 pnpm lint:fix         # Auto-fix lint issues
 pnpm generate         # Generate build-time action name map
@@ -97,6 +97,48 @@ The CLI uses `cob-shopify <domain> <action> [flags]` pattern powered by Commande
 Global flags (`--json`, `--fields`, `--jq`, `--schema`, `--dry-run`, `--yes`) are defined on the root Commander program and accessed via `collectOptions()` in leaf command actions.
 
 Custom YAML tools auto-register as CLI commands under their declared domain (e.g., `domain: "orders"` → `cob-shopify orders <action>`).
+
+## Advertise-and-Activate (MCP only)
+
+Context reduction feature — registers 1 meta-tool (`activate_tools`) instead of 49 tool schemas. AI calls `activate_tools("analytics")` to load only the domain it needs. 82% token reduction.
+
+- **Config:** `tools.advertise_and_activate: true` (default: false)
+- **Env var:** `COB_SHOPIFY_ADVERTISE_AND_ACTIVATE=true`
+- **Module:** `src/core/engine/advertiser.ts` — `registerAdvertiser()`, `buildAdvertisementDescription()`, `createActivateHandler()`
+- **Wiring:** `src/server/bootstrap.ts` — conditional branch based on config flag
+- **Tests:** `src/core/engine/advertiser.test.ts` — 12 unit tests
+- **CLI is unaffected** — CLI already loads one command at a time, no context problem
+
+## Production Testing Procedure
+
+**NEVER test MCP with curl or piped JSON. Always test with real Claude MCP connection.**
+
+### Phase 1: Docker + MCP HTTP
+```bash
+docker compose down
+docker compose build --no-cache
+docker compose up -d
+curl http://127.0.0.1:3000/health   # verify {"status":"ok"}
+claude mcp add --transport http shopify http://127.0.0.1:3000/mcp
+```
+Then ask user to `/mcp` to verify. Test all tools via real Claude tool calls across all 5 domains.
+
+### Phase 2: npm package + MCP stdio
+```bash
+docker compose down
+claude mcp add shopify -- npx cob-shopify-mcp start
+```
+Ask user to `/mcp` to verify. Test all tools again.
+
+### Phase 3: CLI direct (no MCP)
+```bash
+cob-shopify products list --limit 5
+cob-shopify orders list --limit 5
+cob-shopify customers list --limit 5
+cob-shopify inventory low-stock-report --threshold 10
+cob-shopify analytics sales-summary --start_date 2026-01-01 --end_date 2026-03-15
+```
+Test global flags: `--json`, `--fields`, `--schema`, `--dry-run`.
 
 ## Adding a Tool
 
