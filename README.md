@@ -25,7 +25,7 @@ This project gives you **two ways** to interact with Shopify. Same tools, same e
 |---|---------|---------|
 | **What it is** | Direct terminal commands | Protocol for AI agents |
 | **Who it's for** | Developers, scripts, CI/CD | Claude, Cursor, Windsurf, custom agents |
-| **How to use** | `cob-shopify-mcp tools run list_products --params '{"limit":5}'` | AI calls tools automatically via MCP protocol |
+| **How to use** | `cob-shopify-mcp tools run list_products --params '{"limit":5}'` | AI calls tools via MCP protocol |
 | **Install via** | `npm install -g cob-shopify-mcp` | Same npm install, then `claude mcp add` |
 | **Docker** | Not applicable | Yes — HTTP transport for remote/multi-agent |
 | **Custom YAML tools** | Auto-discovered | Auto-discovered |
@@ -40,7 +40,7 @@ This project gives you **two ways** to interact with Shopify. Same tools, same e
 cob-shopify-mcp tools run list_products --params '{"limit": 5}'
 
 # MCP — connect to Claude and let AI use the same tools
-claude mcp add shopify -- cob-shopify-mcp start
+claude mcp add cob-shopify-mcp -- cob-shopify-mcp start
 ```
 
 ## Use Cases
@@ -116,7 +116,7 @@ npm install -g cob-shopify-mcp
 **Connect to Claude CLI:**
 
 ```bash
-claude mcp add shopify \
+claude mcp add cob-shopify-mcp \
   -e SHOPIFY_CLIENT_ID=your_client_id \
   -e SHOPIFY_CLIENT_SECRET=shpss_your_secret \
   -e SHOPIFY_STORE_DOMAIN=your-store.myshopify.com \
@@ -127,13 +127,13 @@ Done. Claude launches the server automatically when needed. Verify:
 
 ```bash
 claude mcp list
-# shopify: ... - ✓ Connected
+# cob-shopify-mcp: ... - ✓ Connected
 ```
 
 **Or with npx (no install at all):**
 
 ```bash
-claude mcp add shopify \
+claude mcp add cob-shopify-mcp \
   -e SHOPIFY_CLIENT_ID=your_client_id \
   -e SHOPIFY_CLIENT_SECRET=shpss_your_secret \
   -e SHOPIFY_STORE_DOMAIN=your-store.myshopify.com \
@@ -145,7 +145,7 @@ claude mcp add shopify \
 ```json
 {
   "mcpServers": {
-    "shopify": {
+    "cob-shopify-mcp": {
       "command": "cob-shopify-mcp",
       "args": ["start"],
       "env": {
@@ -178,7 +178,7 @@ pnpm build
 **B2. Connect to Claude CLI:**
 
 ```bash
-claude mcp add shopify \
+claude mcp add cob-shopify-mcp \
   -e SHOPIFY_CLIENT_ID=your_client_id \
   -e SHOPIFY_CLIENT_SECRET=shpss_your_secret \
   -e SHOPIFY_STORE_DOMAIN=your-store.myshopify.com \
@@ -189,7 +189,7 @@ Done. Verify:
 
 ```bash
 claude mcp list
-# shopify: ... - ✓ Connected
+# cob-shopify-mcp: ... - ✓ Connected
 ```
 
 **Or connect to Claude Desktop** — add to `claude_desktop_config.json` ([file location](#claude-desktop-config-location)):
@@ -197,7 +197,7 @@ claude mcp list
 ```json
 {
   "mcpServers": {
-    "shopify": {
+    "cob-shopify-mcp": {
       "command": "node",
       "args": ["/absolute/path/to/cob-shopify-mcp/dist/cli/index.js", "start"],
       "env": {
@@ -253,7 +253,7 @@ claude mcp add --transport http shopify http://127.0.0.1:3000
 
 # Verify
 claude mcp list
-# shopify: http://127.0.0.1:3000 (HTTP) - ✓ Connected
+# cob-shopify-mcp: http://127.0.0.1:3000 (HTTP) - ✓ Connected
 ```
 
 **Or connect to Claude Desktop** — add to `claude_desktop_config.json` ([file location](#claude-desktop-config-location)):
@@ -261,7 +261,7 @@ claude mcp list
 ```json
 {
   "mcpServers": {
-    "shopify": {
+    "cob-shopify-mcp": {
       "url": "http://127.0.0.1:3000"
     }
   }
@@ -561,7 +561,7 @@ Add to `.cursor/mcp.json` or equivalent:
 ```json
 {
   "mcpServers": {
-    "shopify": {
+    "cob-shopify-mcp": {
       "command": "npx",
       "args": ["-y", "cob-shopify-mcp", "start"],
       "env": {
