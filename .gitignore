@@ -5,6 +5,9 @@ node_modules/
 dist/
 *.tsbuildinfo
 
+# Generated files (build-time)
+src/cli/generated/
+
 # Environment / secrets
 .env
 .env.local

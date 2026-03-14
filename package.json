@@ -16,8 +16,9 @@
 		}
 	},
 	"scripts": {
+		"generate": "npx tsx scripts/generate-cli-commands.ts",
 		"dev": "tsup --watch",
-		"build": "tsup",
+		"build": "pnpm generate && tsup",
 		"test": "vitest run",
 		"test:integration": "vitest run --config vitest.integration.config.ts",
 		"test:watch": "vitest",
@@ -42,6 +43,7 @@
 		"@types/better-sqlite3": "^7.6.13",
 		"@types/node": "^22.10.0",
 		"tsup": "^8.5.1",
+		"tsx": "^4.19.4",
 		"typescript": "^5.9.3",
 		"vitest": "^4.1.0"
 	},
