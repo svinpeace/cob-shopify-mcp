@@ -11,9 +11,21 @@ export default defineCommand({
 		},
 	},
 	async run({ args }) {
+		const { loadConfig, _resetConfig } = await import("../../../core/config/loader.js");
 		const { getAllTools } = await import("../../../server/get-all-tools.js");
+		const { loadYamlTools } = await import("../../../core/registry/yaml-loader.js");
+
+		_resetConfig();
+		const config = await loadConfig();
 
 		const allTools = getAllTools();
+
+		// Load custom YAML tools
+		if (config.tools.custom_paths.length > 0) {
+			const yamlTools = loadYamlTools(config.tools.custom_paths);
+			allTools.push(...yamlTools);
+		}
+
 		const tool = allTools.find((t) => t.name === args.name);
 
 		if (!tool) {

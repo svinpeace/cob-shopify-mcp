@@ -18,6 +18,7 @@ export default defineCommand({
 		const { loadConfig, _resetConfig } = await import("../../../core/config/loader.js");
 		const { ToolRegistry } = await import("../../../core/registry/tool-registry.js");
 		const { getAllTools } = await import("../../../server/get-all-tools.js");
+		const { loadYamlTools } = await import("../../../core/registry/yaml-loader.js");
 
 		_resetConfig();
 
@@ -28,6 +29,14 @@ export default defineCommand({
 
 			for (const tool of allTools) {
 				registry.register(tool);
+			}
+
+			// Load custom YAML tools
+			if (config.tools.custom_paths.length > 0) {
+				const yamlTools = loadYamlTools(config.tools.custom_paths);
+				for (const tool of yamlTools) {
+					registry.register(tool);
+				}
 			}
 
 			const enabledTools = registry.filter(config);
