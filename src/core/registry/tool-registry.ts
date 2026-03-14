@@ -1,13 +1,29 @@
 import type { CobConfig } from "../config/types.js";
 import type { ToolDefinition } from "../engine/types.js";
 
+export const RESERVED_DOMAINS = new Set(["start", "connect", "config", "tools", "stores"]);
+
 export class ToolRegistry {
 	private tools = new Map<string, ToolDefinition>();
 
 	register(tool: ToolDefinition): void {
+		// Check reserved domains for tier 3 (custom) tools
+		if (tool.tier === 3 && RESERVED_DOMAINS.has(tool.domain)) {
+			console.warn(`✗ Domain "${tool.domain}" is reserved. Skipping custom tool "${tool.name}".`);
+			return;
+		}
+
+		// Handle name collision
 		if (this.tools.has(tool.name)) {
+			if (tool.tier === 3) {
+				// Custom tool overrides built-in
+				console.warn(`⚠ Custom tool "${tool.name}" overrides built-in tool.`);
+				this.tools.set(tool.name, tool);
+				return;
+			}
 			throw new Error(`Tool "${tool.name}" is already registered`);
 		}
+
 		this.tools.set(tool.name, tool);
 	}
 

@@ -1,7 +1,7 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import type { CobConfig } from "../config/types.js";
 import type { ToolDefinition } from "../engine/types.js";
-import { ToolRegistry } from "./tool-registry.js";
+import { RESERVED_DOMAINS, ToolRegistry } from "./tool-registry.js";
 
 function makeTool(overrides: Partial<ToolDefinition> = {}): ToolDefinition {
 	return {
@@ -141,5 +141,73 @@ describe("ToolRegistry", () => {
 		registry.register(makeTool({ name: "tier2_tool", tier: 2 }));
 		const result = registry.filter(makeConfig({ enable: ["tier2_tool"] }));
 		expect(result.find((t) => t.name === "tier2_tool")).toBeDefined();
+	});
+
+	it("tier 3 tool overrides existing built-in tool with same name", () => {
+		const registry = new ToolRegistry();
+		const builtIn = makeTool({ name: "list_products", tier: 1 });
+		const custom = makeTool({ name: "list_products", tier: 3, domain: "custom", description: "Custom override" });
+		registry.register(builtIn);
+		registry.register(custom);
+		const result = registry.get("list_products");
+		expect(result).toBe(custom);
+		expect(result?.tier).toBe(3);
+	});
+
+	it("two non-tier-3 tools with same name throws error", () => {
+		const registry = new ToolRegistry();
+		registry.register(makeTool({ name: "dup_tool", tier: 1 }));
+		expect(() => registry.register(makeTool({ name: "dup_tool", tier: 2 }))).toThrow(
+			'"dup_tool" is already registered',
+		);
+	});
+
+	it("tier 3 tool with reserved domain is silently skipped", () => {
+		const registry = new ToolRegistry();
+		const custom = makeTool({ name: "my_custom_tool", tier: 3, domain: "tools" });
+		registry.register(custom);
+		expect(registry.get("my_custom_tool")).toBeUndefined();
+		expect(registry.getAll()).toHaveLength(0);
+	});
+
+	it("tier 1 tool with reserved domain is allowed", () => {
+		const registry = new ToolRegistry();
+		const builtIn = makeTool({ name: "connect_store", tier: 1, domain: "connect" });
+		registry.register(builtIn);
+		expect(registry.get("connect_store")).toBe(builtIn);
+	});
+
+	it("console.warn is called when tier 3 tool overrides built-in", () => {
+		const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
+		try {
+			const registry = new ToolRegistry();
+			registry.register(makeTool({ name: "list_products", tier: 1 }));
+			registry.register(makeTool({ name: "list_products", tier: 3, domain: "custom" }));
+			expect(warnSpy).toHaveBeenCalledWith(
+				expect.stringContaining('Custom tool "list_products" overrides built-in tool'),
+			);
+		} finally {
+			warnSpy.mockRestore();
+		}
+	});
+
+	it("console.warn is called when tier 3 tool has reserved domain", () => {
+		const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
+		try {
+			const registry = new ToolRegistry();
+			registry.register(makeTool({ name: "bad_tool", tier: 3, domain: "config" }));
+			expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('Domain "config" is reserved'));
+		} finally {
+			warnSpy.mockRestore();
+		}
+	});
+
+	it("RESERVED_DOMAINS contains expected domains", () => {
+		expect(RESERVED_DOMAINS.has("start")).toBe(true);
+		expect(RESERVED_DOMAINS.has("connect")).toBe(true);
+		expect(RESERVED_DOMAINS.has("config")).toBe(true);
+		expect(RESERVED_DOMAINS.has("tools")).toBe(true);
+		expect(RESERVED_DOMAINS.has("stores")).toBe(true);
+		expect(RESERVED_DOMAINS.has("products")).toBe(false);
 	});
 });
