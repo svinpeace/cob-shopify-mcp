@@ -16,10 +16,7 @@ export default defineCommand({
 	},
 	async run({ args }) {
 		const { printDeprecationWarning } = await import("../../deprecation.js");
-		printDeprecationWarning(
-			"tools list",
-			"'cob-shopify --help' or 'cob-shopify <domain>'",
-		);
+		printDeprecationWarning("tools list", "'cob-shopify --help' or 'cob-shopify <domain>'");
 
 		const { loadConfig, _resetConfig } = await import("../../../core/config/loader.js");
 		const { ToolRegistry } = await import("../../../core/registry/tool-registry.js");

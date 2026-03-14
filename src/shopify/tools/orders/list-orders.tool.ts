@@ -9,7 +9,18 @@ export const listOrders = defineTool({
 	description:
 		"List orders with optional filtering by status, financial status, and fulfillment status. Returns order details including line items and fulfillment tracking.",
 	scopes: ["read_orders"],
-	outputFields: ["id", "name", "createdAt", "displayFinancialStatus", "displayFulfillmentStatus", "totalPriceSet", "customer", "lineItems", "fulfillments", "pageInfo"],
+	outputFields: [
+		"id",
+		"name",
+		"createdAt",
+		"displayFinancialStatus",
+		"displayFulfillmentStatus",
+		"totalPriceSet",
+		"customer",
+		"lineItems",
+		"fulfillments",
+		"pageInfo",
+	],
 	input: {
 		limit: z.number().min(1).max(50).default(10),
 		status: z.string().optional(),

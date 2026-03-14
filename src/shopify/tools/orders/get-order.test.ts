@@ -13,7 +13,11 @@ const mockData = {
 		subtotalPriceSet: { shopMoney: { amount: "119.99", currencyCode: "USD" } },
 		totalTaxSet: { shopMoney: { amount: "10.00", currencyCode: "USD" } },
 		totalShippingPriceSet: { shopMoney: { amount: "0.00", currencyCode: "USD" } },
-		customer: { id: "gid://shopify/Customer/1", displayName: "John Doe", defaultEmailAddress: { emailAddress: "john@example.com" } },
+		customer: {
+			id: "gid://shopify/Customer/1",
+			displayName: "John Doe",
+			defaultEmailAddress: { emailAddress: "john@example.com" },
+		},
 		lineItems: {
 			edges: [
 				{

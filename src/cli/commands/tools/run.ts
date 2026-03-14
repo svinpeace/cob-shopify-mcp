@@ -62,10 +62,7 @@ export default defineCommand({
 
 			// Deprecation warning
 			const { getNewCommand, printDeprecationWarning } = await import("../../deprecation.js");
-			printDeprecationWarning(
-				`tools run ${args.name}`,
-				getNewCommand(tool.name, tool.domain),
-			);
+			printDeprecationWarning(`tools run ${args.name}`, getNewCommand(tool.name, tool.domain));
 
 			if (!enabledNames.has(args.name)) {
 				consola.error(`Tool "${args.name}" is disabled by config.`);

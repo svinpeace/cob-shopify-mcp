@@ -23,7 +23,11 @@ const mockOrdersResponse = {
 					displayFinancialStatus: "PAID",
 					displayFulfillmentStatus: "FULFILLED",
 					totalPriceSet: { shopMoney: { amount: "129.99", currencyCode: "USD" } },
-					customer: { id: "gid://shopify/Customer/1", displayName: "John Doe", defaultEmailAddress: { emailAddress: "john@example.com" } },
+					customer: {
+						id: "gid://shopify/Customer/1",
+						displayName: "John Doe",
+						defaultEmailAddress: { emailAddress: "john@example.com" },
+					},
 					lineItems: {
 						edges: [
 							{

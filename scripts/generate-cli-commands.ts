@@ -11,8 +11,8 @@
  * Usage: npx tsx scripts/generate-cli-commands.ts
  */
 
-import { readdirSync, readFileSync, writeFileSync, mkdirSync } from "node:fs";
-import { resolve, dirname, join } from "node:path";
+import { mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
+import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { deriveActionName } from "../src/cli/converter/derive-action-name.js";
 
@@ -46,6 +46,4 @@ for (const domain of domains) {
 mkdirSync(outDir, { recursive: true });
 writeFileSync(outFile, `${JSON.stringify(map, null, "\t")}\n`);
 
-console.log(
-	`Generated ${outFile} with ${Object.keys(map).length} action name mappings`,
-);
+console.log(`Generated ${outFile} with ${Object.keys(map).length} action name mappings`);

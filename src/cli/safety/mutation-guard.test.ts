@@ -120,9 +120,6 @@ describe("confirmMutation", () => {
 		const tool = makeTool(["write_products"]);
 		await confirmMutation(tool, {});
 
-		expect(promptSpy).toHaveBeenCalledWith(
-			expect.stringContaining("products"),
-			expect.any(Object),
-		);
+		expect(promptSpy).toHaveBeenCalledWith(expect.stringContaining("products"), expect.any(Object));
 	});
 });

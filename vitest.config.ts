@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
-import { defineConfig } from "vitest/config";
 import type { Plugin } from "vitest/config";
+import { defineConfig } from "vitest/config";
 
 function graphqlRawPlugin(): Plugin {
 	return {

@@ -10,7 +10,19 @@ export const listCustomers = defineTool({
 	description:
 		"List customers with cursor pagination. Returns displayName, email, ordersCount, totalSpent, tags, and state.",
 	scopes: ["read_customers"],
-	outputFields: ["id", "displayName", "email", "phone", "numberOfOrders", "amountSpent", "tags", "state", "createdAt", "updatedAt", "pageInfo"],
+	outputFields: [
+		"id",
+		"displayName",
+		"email",
+		"phone",
+		"numberOfOrders",
+		"amountSpent",
+		"tags",
+		"state",
+		"createdAt",
+		"updatedAt",
+		"pageInfo",
+	],
 	input: {
 		limit: z.number().min(1).max(250).default(10),
 		cursor: z.string().optional(),

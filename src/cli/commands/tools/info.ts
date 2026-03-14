@@ -36,10 +36,7 @@ export default defineCommand({
 
 		// Deprecation warning
 		const { getNewCommand, printDeprecationWarning } = await import("../../deprecation.js");
-		printDeprecationWarning(
-			`tools info ${args.name}`,
-			`${getNewCommand(tool.name, tool.domain)} --describe`,
-		);
+		printDeprecationWarning(`tools info ${args.name}`, `${getNewCommand(tool.name, tool.domain)} --describe`);
 
 		const lines: string[] = [
 			`Name:        ${tool.name}`,

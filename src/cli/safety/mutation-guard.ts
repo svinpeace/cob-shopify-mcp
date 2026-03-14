@@ -32,10 +32,7 @@ function deriveAction(toolName: string): string {
  * - --yes flag is set
  * - stderr is not a TTY (piped/automated)
  */
-export async function confirmMutation(
-	tool: ToolDefinition,
-	options: { yes?: boolean },
-): Promise<boolean> {
+export async function confirmMutation(tool: ToolDefinition, options: { yes?: boolean }): Promise<boolean> {
 	// Auto-confirm: --yes flag
 	if (options.yes) {
 		return true;
@@ -47,10 +44,11 @@ export async function confirmMutation(
 	}
 
 	const action = deriveAction(tool.name);
-	const answer = await consola.prompt(
-		`\u26A0 This will ${action} ${tool.domain}. Continue?`,
-		{ type: "text", placeholder: "y/N", initial: "" },
-	);
+	const answer = await consola.prompt(`\u26A0 This will ${action} ${tool.domain}. Continue?`, {
+		type: "text",
+		placeholder: "y/N",
+		initial: "",
+	});
 
 	// consola returns Symbol.for("cancel") on Ctrl+C
 	if (typeof answer === "symbol") {

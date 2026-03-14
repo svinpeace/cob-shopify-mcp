@@ -9,7 +9,22 @@ export const getProduct = defineTool({
 	description:
 		"Get a single product by its Shopify GID. Returns full product detail including all variants and images.",
 	scopes: ["read_products"],
-	outputFields: ["id", "title", "handle", "descriptionHtml", "status", "vendor", "productType", "tags", "totalInventory", "createdAt", "updatedAt", "featuredMedia", "media", "variants"],
+	outputFields: [
+		"id",
+		"title",
+		"handle",
+		"descriptionHtml",
+		"status",
+		"vendor",
+		"productType",
+		"tags",
+		"totalInventory",
+		"createdAt",
+		"updatedAt",
+		"featuredMedia",
+		"media",
+		"variants",
+	],
 	input: {
 		id: z.string(),
 	},
