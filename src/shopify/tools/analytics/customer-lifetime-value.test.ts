@@ -23,7 +23,7 @@ describe.skipIf(skipIfNoCredentials())("customer_lifetime_value", () => {
 		expect(customerLifetimeValue.name).toBe("customer_lifetime_value");
 		expect(customerLifetimeValue.domain).toBe("analytics");
 		expect(customerLifetimeValue.tier).toBe(1);
-		expect(customerLifetimeValue.scopes).toEqual(["read_reports", "read_customers"]);
+		expect(customerLifetimeValue.scopes).toEqual(["read_reports"]);
 		expect(customerLifetimeValue.handler).toBeDefined();
 	});
 
@@ -37,7 +37,7 @@ describe.skipIf(skipIfNoCredentials())("customer_lifetime_value", () => {
 		expect(Array.isArray(data.customers)).toBe(true);
 		expect(typeof data.count).toBe("number");
 		for (const customer of data.customers) {
-			expect(typeof customer.email).toBe("string");
+			expect(typeof customer.customer).toBe("string");
 			expect(typeof customer.totalOrders).toBe("number");
 			expect(typeof customer.totalAmountSpent).toBe("number");
 			expect(typeof customer.averageOrderValue).toBe("number");

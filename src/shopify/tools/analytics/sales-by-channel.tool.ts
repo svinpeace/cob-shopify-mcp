@@ -10,8 +10,14 @@ export default defineTool({
 	description: "Revenue and orders broken down by sales channel",
 	scopes: ["read_reports"],
 	input: {
-		start_date: z.string().describe("ISO 8601 date, e.g. 2026-01-01"),
-		end_date: z.string().describe("ISO 8601 date, e.g. 2026-01-31"),
+		start_date: z
+			.string()
+			.regex(/^\d{4}-\d{2}-\d{2}$/, "Must be YYYY-MM-DD format")
+			.describe("ISO 8601 date, e.g. 2026-01-01"),
+		end_date: z
+			.string()
+			.regex(/^\d{4}-\d{2}-\d{2}$/, "Must be YYYY-MM-DD format")
+			.describe("ISO 8601 date, e.g. 2026-01-31"),
 		limit: z.coerce.number().min(1).max(50).default(10).describe("Number of channels to return"),
 	},
 	handler: async (input: { start_date: string; end_date: string; limit: number }, ctx: ExecutionContext) => {

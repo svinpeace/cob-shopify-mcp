@@ -23,7 +23,7 @@ describe.skipIf(skipIfNoCredentials())("repeat_customer_rate", () => {
 		expect(repeatCustomerRate.name).toBe("repeat_customer_rate");
 		expect(repeatCustomerRate.domain).toBe("analytics");
 		expect(repeatCustomerRate.tier).toBe(1);
-		expect(repeatCustomerRate.scopes).toEqual(["read_reports", "read_orders", "read_customers"]);
+		expect(repeatCustomerRate.scopes).toEqual(["read_reports"]);
 		expect(repeatCustomerRate.handler).toBeDefined();
 	});
 
@@ -45,11 +45,8 @@ describe.skipIf(skipIfNoCredentials())("repeat_customer_rate", () => {
 		expect(data.repeatRate).toBeGreaterThanOrEqual(0);
 		expect(data.repeatRate).toBeLessThanOrEqual(100);
 
-		// averageOrdersPerRepeatCustomer may be null if ShopifyQL path lacks data
-		if (data.averageOrdersPerRepeatCustomer !== null) {
-			expect(typeof data.averageOrdersPerRepeatCustomer).toBe("number");
-			expect(data.averageOrdersPerRepeatCustomer).toBeGreaterThanOrEqual(0);
-		}
+		expect(typeof data.totalOrders).toBe("number");
+		expect(typeof data.note).toBe("string");
 	});
 
 	it("handles a narrow date range", async () => {

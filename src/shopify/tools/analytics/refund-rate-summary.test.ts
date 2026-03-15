@@ -35,9 +35,8 @@ describe.skipIf(skipIfNoCredentials())("refund_rate_summary", () => {
 		);
 		const data = result.data as any;
 		expect(typeof data.totalOrders).toBe("number");
-		expect(typeof data.refundedOrders).toBe("number");
+		expect(typeof data.returnedItems).toBe("number");
 		expect(typeof data.refundRate).toBe("number");
 		expect(typeof data.totalRefundAmount).toBe("number");
-		expect(typeof data.currency).toBe("string");
 	});
 });

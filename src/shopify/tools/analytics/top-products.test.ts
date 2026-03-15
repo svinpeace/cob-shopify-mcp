@@ -40,10 +40,9 @@ describe.skipIf(skipIfNoCredentials())("top_products", () => {
 
 		if (data.products.length > 0) {
 			const first = data.products[0];
-			expect(first.productId).toBeNull();
 			expect(typeof first.productTitle).toBe("string");
 			expect(typeof first.totalRevenue).toBe("number");
-			expect(typeof first.totalQuantity).toBe("number");
+			expect(typeof first.netSales).toBe("number");
 			expect(typeof first.orderCount).toBe("number");
 		}
 

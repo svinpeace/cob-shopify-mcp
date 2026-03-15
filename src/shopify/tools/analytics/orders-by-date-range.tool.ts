@@ -7,11 +7,17 @@ export default defineTool({
 	name: "orders_by_date_range",
 	domain: "analytics",
 	tier: 1,
-	description: "Order count and metrics grouped by day/week/month",
+	description: "Order count and metrics grouped by day/week/month (values in shop currency)",
 	scopes: ["read_reports"],
 	input: {
-		start_date: z.string().describe("ISO 8601 date, e.g. 2026-01-01"),
-		end_date: z.string().describe("ISO 8601 date, e.g. 2026-01-31"),
+		start_date: z
+			.string()
+			.regex(/^\d{4}-\d{2}-\d{2}$/, "Must be YYYY-MM-DD format")
+			.describe("ISO 8601 date, e.g. 2026-01-01"),
+		end_date: z
+			.string()
+			.regex(/^\d{4}-\d{2}-\d{2}$/, "Must be YYYY-MM-DD format")
+			.describe("ISO 8601 date, e.g. 2026-01-31"),
 		group_by: z.enum(["day", "week", "month"]).default("day").describe("Group orders by day, week, or month"),
 	},
 	handler: async (input: { start_date: string; end_date: string; group_by: string }, ctx: ExecutionContext) => {
@@ -25,7 +31,6 @@ export default defineTool({
 			period: row[timeColumn] as string,
 			orderCount: (row.orders as number) ?? 0,
 			totalSales: (row.total_sales as number) ?? 0,
-			currency: "USD",
 		}));
 
 		return { periods, groupBy: input.group_by };

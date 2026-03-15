@@ -39,7 +39,7 @@ describe.skipIf(skipIfNoCredentials())("product_vendor_performance", () => {
 		for (const vendor of data.vendors) {
 			expect(typeof vendor.vendor).toBe("string");
 			expect(typeof vendor.totalSales).toBe("number");
-			expect(typeof vendor.unitsSold).toBe("number");
+			expect(typeof vendor.netSales).toBe("number");
 			expect(typeof vendor.orders).toBe("number");
 		}
 	});
@@ -47,7 +47,7 @@ describe.skipIf(skipIfNoCredentials())("product_vendor_performance", () => {
 	it("respects sort_by parameter", async () => {
 		const result = await context.engine.execute(
 			"product_vendor_performance",
-			{ start_date: "2024-01-01", end_date: "2026-12-31", sort_by: "quantity" },
+			{ start_date: "2024-01-01", end_date: "2026-12-31", sort_by: "orders" },
 			context.ctx,
 		);
 		const data = result.data as any;

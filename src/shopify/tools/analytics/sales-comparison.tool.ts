@@ -11,8 +11,14 @@ export default defineTool({
 		"Compare sales metrics across time periods using ShopifyQL COMPARE TO. Returns current and comparison period data with percent changes — ideal for period-over-period analysis.",
 	scopes: ["read_reports"],
 	input: {
-		start_date: z.string().describe("ISO 8601 date for the start of the period, e.g. 2026-01-01"),
-		end_date: z.string().describe("ISO 8601 date for the end of the period, e.g. 2026-01-31"),
+		start_date: z
+			.string()
+			.regex(/^\d{4}-\d{2}-\d{2}$/, "Must be YYYY-MM-DD format")
+			.describe("ISO 8601 date for the start of the period, e.g. 2026-01-01"),
+		end_date: z
+			.string()
+			.regex(/^\d{4}-\d{2}-\d{2}$/, "Must be YYYY-MM-DD format")
+			.describe("ISO 8601 date for the end of the period, e.g. 2026-01-31"),
 		compare_to: z
 			.enum(["previous_period", "previous_year"])
 			.default("previous_period")

@@ -7,8 +7,9 @@ export default defineTool({
 	name: "customer_lifetime_value",
 	domain: "analytics",
 	tier: 1,
-	description: "Customer lifetime value report showing top customers by spend or order count",
-	scopes: ["read_reports", "read_customers"],
+	description:
+		"Customer lifetime value report showing top customers by spend or order count. Note: groups by customer_name which may not be unique across customers with the same name.",
+	scopes: ["read_reports"],
 	input: {
 		limit: z.coerce.number().min(1).max(100).default(25).describe("Number of customers to return"),
 		sort_by: z.enum(["amount", "orders"]).default("amount").describe("Sort by total spend or order count"),

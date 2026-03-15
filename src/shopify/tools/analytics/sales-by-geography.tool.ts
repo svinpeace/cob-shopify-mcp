@@ -10,8 +10,14 @@ export default defineTool({
 	description: "Sales breakdown by geographic region (country or region) using ShopifyQL",
 	scopes: ["read_reports"],
 	input: {
-		start_date: z.string().describe("ISO 8601 date, e.g. 2026-01-01"),
-		end_date: z.string().describe("ISO 8601 date, e.g. 2026-01-31"),
+		start_date: z
+			.string()
+			.regex(/^\d{4}-\d{2}-\d{2}$/, "Must be YYYY-MM-DD format")
+			.describe("ISO 8601 date, e.g. 2026-01-01"),
+		end_date: z
+			.string()
+			.regex(/^\d{4}-\d{2}-\d{2}$/, "Must be YYYY-MM-DD format")
+			.describe("ISO 8601 date, e.g. 2026-01-31"),
 		group_by: z.enum(["country", "region"]).default("country").describe("Group sales by country or region"),
 		limit: z.coerce.number().min(1).max(100).default(20).describe("Number of locations to return"),
 	},

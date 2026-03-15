@@ -41,7 +41,6 @@ describe.skipIf(skipIfNoCredentials())("orders_by_date_range", () => {
 			expect(typeof first.period).toBe("string");
 			expect(typeof first.orderCount).toBe("number");
 			expect(typeof first.totalSales).toBe("number");
-			expect(first.currency).toBe("USD");
 		}
 	});
 });

@@ -7,11 +7,17 @@ export default defineTool({
 	name: "sales_summary",
 	domain: "analytics",
 	tier: 1,
-	description: "Sales total/average by date range",
+	description: "Sales total/average by date range (values in shop currency)",
 	scopes: ["read_reports"],
 	input: {
-		start_date: z.string().describe("ISO 8601 date, e.g. 2026-01-01"),
-		end_date: z.string().describe("ISO 8601 date, e.g. 2026-01-31"),
+		start_date: z
+			.string()
+			.regex(/^\d{4}-\d{2}-\d{2}$/, "Must be YYYY-MM-DD format")
+			.describe("ISO 8601 date, e.g. 2026-01-01"),
+		end_date: z
+			.string()
+			.regex(/^\d{4}-\d{2}-\d{2}$/, "Must be YYYY-MM-DD format")
+			.describe("ISO 8601 date, e.g. 2026-01-31"),
 	},
 	handler: async (input: { start_date: string; end_date: string }, ctx: ExecutionContext) => {
 		const query = `FROM sales SHOW total_sales, net_sales, gross_sales, orders, average_order_value SINCE ${input.start_date} UNTIL ${input.end_date}`;
@@ -22,7 +28,6 @@ export default defineTool({
 			totalSales: (row.total_sales as number) ?? 0,
 			orderCount: (row.orders as number) ?? 0,
 			averageOrderValue: (row.average_order_value as number) ?? 0,
-			currency: "USD",
 			netSales: (row.net_sales as number) ?? 0,
 			grossSales: (row.gross_sales as number) ?? 0,
 		};

@@ -41,7 +41,6 @@ describe.skipIf(skipIfNoCredentials())("sales_by_channel", () => {
 			expect(typeof channel.totalSales).toBe("number");
 			expect(typeof channel.netSales).toBe("number");
 			expect(typeof channel.orders).toBe("number");
-			expect(typeof channel.unitsSold).toBe("number");
 		}
 	});
 });

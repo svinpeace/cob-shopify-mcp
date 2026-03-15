@@ -34,10 +34,13 @@ describe.skipIf(skipIfNoCredentials())("conversion_funnel", () => {
 			context.ctx,
 		);
 		const data = result.data as any;
-		expect(typeof data.sessions).toBe("number");
+		expect(typeof data.viewSessions).toBe("number");
+		expect(typeof data.cartSessions).toBe("number");
+		expect(typeof data.checkoutSessions).toBe("number");
+		expect(typeof data.purchaseSessions).toBe("number");
 		expect(typeof data.orders).toBe("number");
 		expect(typeof data.conversionRate).toBe("number");
-		expect(typeof data.cartAbandonmentRate).toBe("number");
-		expect(typeof data.ordersPerSession).toBe("number");
+		expect(typeof data.cartRate).toBe("number");
+		expect(typeof data.checkoutRate).toBe("number");
 	});
 });

@@ -7,46 +7,48 @@ export default defineTool({
 	name: "conversion_funnel",
 	domain: "analytics",
 	tier: 1,
-	description: "Conversion funnel metrics including sessions, orders, conversion rate, and cart abandonment",
+	description:
+		"Conversion funnel metrics: view sessions, cart, checkout, purchase sessions from product analytics, plus total orders from sales",
 	scopes: ["read_reports"],
 	input: {
-		start_date: z.string().describe("ISO 8601 date, e.g. 2026-01-01"),
-		end_date: z.string().describe("ISO 8601 date, e.g. 2026-01-31"),
+		start_date: z
+			.string()
+			.regex(/^\d{4}-\d{2}-\d{2}$/, "Must be YYYY-MM-DD format")
+			.describe("ISO 8601 date, e.g. 2026-01-01"),
+		end_date: z
+			.string()
+			.regex(/^\d{4}-\d{2}-\d{2}$/, "Must be YYYY-MM-DD format")
+			.describe("ISO 8601 date, e.g. 2026-01-31"),
 	},
 	handler: async (input: { start_date: string; end_date: string }, ctx: ExecutionContext) => {
-		try {
-			const query = `FROM sales, sessions SHOW sessions, orders, conversion_rate, cart_abandonment_rate SINCE ${input.start_date} UNTIL ${input.end_date}`;
-			const result = await executeShopifyQL(query, ctx);
-			const row = result.data[0] ?? {};
-			const sessions = (row.sessions as number) ?? 0;
-			const orders = (row.orders as number) ?? 0;
-			return {
-				sessions,
-				orders,
-				conversionRate: (row.conversion_rate as number) ?? 0,
-				cartAbandonmentRate: (row.cart_abandonment_rate as number) ?? 0,
-				ordersPerSession: sessions > 0 ? orders / sessions : 0,
-			};
-		} catch {
-			const [salesResult, sessionsResult] = await Promise.all([
-				executeShopifyQL(
-					`FROM sales SHOW orders SINCE ${input.start_date} UNTIL ${input.end_date}`,
-					ctx,
-				),
-				executeShopifyQL(
-					`FROM sessions SHOW sessions SINCE ${input.start_date} UNTIL ${input.end_date}`,
-					ctx,
-				),
-			]);
-			const orders = (salesResult.data[0]?.orders as number) ?? 0;
-			const sessions = (sessionsResult.data[0]?.sessions as number) ?? 0;
-			return {
-				sessions,
-				orders,
-				conversionRate: sessions > 0 ? orders / sessions : 0,
-				cartAbandonmentRate: 0,
-				ordersPerSession: sessions > 0 ? orders / sessions : 0,
-			};
-		}
+		const [salesResult, productsResult] = await Promise.all([
+			executeShopifyQL(`FROM sales SHOW orders SINCE ${input.start_date} UNTIL ${input.end_date}`, ctx),
+			executeShopifyQL(
+				`FROM products SHOW view_sessions, cart_sessions, checkout_sessions, purchase_sessions SINCE ${input.start_date} UNTIL ${input.end_date}`,
+				ctx,
+			),
+		]);
+
+		const orders = (salesResult.data[0]?.orders as number) ?? 0;
+		const productRow = productsResult.data[0] ?? {};
+		const viewSessions = (productRow.view_sessions as number) ?? 0;
+		const cartSessions = (productRow.cart_sessions as number) ?? 0;
+		const checkoutSessions = (productRow.checkout_sessions as number) ?? 0;
+		const purchaseSessions = (productRow.purchase_sessions as number) ?? 0;
+
+		const conversionRate = viewSessions > 0 ? Math.round((purchaseSessions / viewSessions) * 10000) / 100 : 0;
+		const cartRate = viewSessions > 0 ? Math.round((cartSessions / viewSessions) * 10000) / 100 : 0;
+		const checkoutRate = cartSessions > 0 ? Math.round((checkoutSessions / cartSessions) * 10000) / 100 : 0;
+
+		return {
+			viewSessions,
+			cartSessions,
+			checkoutSessions,
+			purchaseSessions,
+			orders,
+			conversionRate,
+			cartRate,
+			checkoutRate,
+		};
 	},
 });

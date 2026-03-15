@@ -5,7 +5,6 @@ import { z } from "zod";
 
 const sortColumnMap: Record<string, string> = {
 	revenue: "total_sales",
-	quantity: "orders",
 	orders: "orders",
 };
 
@@ -16,13 +15,19 @@ export default defineTool({
 	description: "Revenue and orders broken down by product vendor",
 	scopes: ["read_reports"],
 	input: {
-		start_date: z.string().describe("ISO 8601 date, e.g. 2026-01-01"),
-		end_date: z.string().describe("ISO 8601 date, e.g. 2026-01-31"),
+		start_date: z
+			.string()
+			.regex(/^\d{4}-\d{2}-\d{2}$/, "Must be YYYY-MM-DD format")
+			.describe("ISO 8601 date, e.g. 2026-01-01"),
+		end_date: z
+			.string()
+			.regex(/^\d{4}-\d{2}-\d{2}$/, "Must be YYYY-MM-DD format")
+			.describe("ISO 8601 date, e.g. 2026-01-31"),
 		limit: z.coerce.number().min(1).max(50).default(10).describe("Number of vendors to return"),
 		sort_by: z
-			.enum(["revenue", "quantity", "orders"])
+			.enum(["revenue", "orders"])
 			.default("revenue")
-			.describe("Sort vendors by: revenue, quantity, or orders"),
+			.describe("Sort vendors by: revenue or orders"),
 	},
 	handler: async (
 		input: { start_date: string; end_date: string; limit: number; sort_by: string },

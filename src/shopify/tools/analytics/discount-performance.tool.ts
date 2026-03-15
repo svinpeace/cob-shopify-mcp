@@ -11,8 +11,14 @@ export default defineTool({
 		"Analyze discount impact on sales: discounted vs total revenue, discount percentage, and total discount amount",
 	scopes: ["read_reports"],
 	input: {
-		start_date: z.string().describe("ISO 8601 date, e.g. 2026-01-01"),
-		end_date: z.string().describe("ISO 8601 date, e.g. 2026-01-31"),
+		start_date: z
+			.string()
+			.regex(/^\d{4}-\d{2}-\d{2}$/, "Must be YYYY-MM-DD format")
+			.describe("ISO 8601 date, e.g. 2026-01-01"),
+		end_date: z
+			.string()
+			.regex(/^\d{4}-\d{2}-\d{2}$/, "Must be YYYY-MM-DD format")
+			.describe("ISO 8601 date, e.g. 2026-01-31"),
 	},
 	handler: async (input: { start_date: string; end_date: string }, ctx: ExecutionContext) => {
 		const allSalesQuery = `FROM sales SHOW total_sales, orders, discounts SINCE ${input.start_date} UNTIL ${input.end_date}`;

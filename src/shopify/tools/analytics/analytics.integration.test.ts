@@ -31,13 +31,11 @@ describe.skipIf(skipIfNoCredentials())("Analytics Integration", () => {
 			totalSales: number;
 			orderCount: number;
 			averageOrderValue: number;
-			currency: string;
 		};
 
 		expect(typeof data.totalSales).toBe("number");
 		expect(typeof data.orderCount).toBe("number");
 		expect(typeof data.averageOrderValue).toBe("number");
-		expect(typeof data.currency).toBe("string");
 	});
 
 	it("top_products returns product rankings", async () => {
@@ -53,10 +51,10 @@ describe.skipIf(skipIfNoCredentials())("Analytics Integration", () => {
 
 		if (data.products.length > 0) {
 			const product = data.products[0] as Record<string, unknown>;
-			expect(product.productId).toBeDefined();
 			expect(product.productTitle).toBeDefined();
 			expect(typeof product.totalRevenue).toBe("number");
-			expect(typeof product.totalQuantity).toBe("number");
+			expect(typeof product.netSales).toBe("number");
+			expect(typeof product.orderCount).toBe("number");
 		}
 	});
 
@@ -72,7 +70,6 @@ describe.skipIf(skipIfNoCredentials())("Analytics Integration", () => {
 				totalSales: number;
 				netSales: number;
 				orders: number;
-				unitsSold: number;
 			}>;
 			count: number;
 		};
@@ -86,7 +83,6 @@ describe.skipIf(skipIfNoCredentials())("Analytics Integration", () => {
 			expect(typeof channel.totalSales).toBe("number");
 			expect(typeof channel.netSales).toBe("number");
 			expect(typeof channel.orders).toBe("number");
-			expect(typeof channel.unitsSold).toBe("number");
 		}
 	});
 
