@@ -773,7 +773,7 @@ flowchart TB
             ORD["Orders\n12 tools"]
             CUST["Customers\n9 tools"]
             INV["Inventory\n7 tools"]
-            ANAL["Analytics\n6 tools"]
+            ANAL["Analytics\n16 tools"]
         end
 
         subgraph MCPPRIM["MCP Primitives"]
