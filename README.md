@@ -21,7 +21,7 @@
 - **Cost tracking** — Every response includes Shopify API cost metadata
 - **Rate limiting** — Respects Shopify's cost-based throttling
 - **Query caching** — Configurable TTL per query type
-- **82% less context bloat** — Advertise-and-Activate mode: 1 meta-tool instead of 49 schemas, domains loaded on demand
+- **82% less context bloat** — Advertise-and-Activate mode: 1 meta-tool instead of 59 schemas, domains loaded on demand
 - **Config-driven** — YAML config, env vars, CLI overrides
 - **Type-safe** — Full TypeScript with Zod validation
 
@@ -65,12 +65,12 @@ claude mcp add cob-shopify-mcp -- cob-shopify-mcp start
 
 ## Advertise-and-Activate
 
-Every MCP server on GitHub dumps all tool schemas into the AI's context on connect. With 49 tools, that's ~16,000 tokens consumed before the user even asks a question. Most conversations use 1-2 tools — **95% of those tokens are wasted**.
+Every MCP server on GitHub dumps all tool schemas into the AI's context on connect. With 59 tools, that's ~19,000 tokens consumed before the user even asks a question. Most conversations use 1-2 tools — **95% of those tokens are wasted**.
 
-Advertise-and-Activate fixes this. Instead of loading all 49 tool schemas, the server registers a single `activate_tools` meta-tool with a lightweight domain summary:
+Advertise-and-Activate fixes this. Instead of loading all 59 tool schemas, the server registers a single `activate_tools` meta-tool with a lightweight domain summary:
 
 ```
-Before (default):   49 tool schemas → ~16,000 tokens per prompt
+Before (default):   59 tool schemas → ~19,000 tokens per prompt
 After (activate):   1 meta-tool     → ~300 tokens per prompt
 On-demand:          AI activates 1 domain → +2,000-3,000 tokens only when needed
 ```
@@ -78,10 +78,10 @@ On-demand:          AI activates 1 domain → +2,000-3,000 tokens only when need
 **How it works:**
 
 1. **Connect** — AI sees 1 tool: `activate_tools` with a description listing all domains and their tool counts
-2. **Activate** — AI calls `activate_tools("analytics")` — server dynamically registers 6 analytics tools
+2. **Activate** — AI calls `activate_tools("analytics")` — server dynamically registers 16 analytics tools
 3. **Execute** — AI calls `top_products` as normal
 
-**Typical conversation: ~2,800 tokens instead of ~16,000. That's an 82% reduction.**
+**Typical conversation: ~2,800 tokens instead of ~19,000. That's an 82% reduction.**
 
 No competitor Shopify MCP server has this. It requires clean domain grouping, a dynamic registry, and a meta-tool pattern — all built into this server's architecture.
 
@@ -143,7 +143,7 @@ flowchart LR
         AUTO["Automation Workflows"]
     end
 
-    MCP["cob-shopify-mcp\n49 tools · 4 resources · 4 prompts\nAdvertise-and-Activate: 82% less context"]
+    MCP["cob-shopify-mcp\n59 tools · 4 resources · 4 prompts\nAdvertise-and-Activate: 82% less context"]
 
     SHOPIFY["Shopify Store"]
 
@@ -246,7 +246,7 @@ claude mcp add cob-shopify-mcp \
 }
 ```
 
-Restart Claude Desktop after saving. You'll see the tools icon showing 49 available tools.
+Restart Claude Desktop after saving. You'll see the tools icon showing 59 available tools.
 
 ---
 
@@ -749,7 +749,7 @@ flowchart TB
             CACHE["Cache Layer"]
         end
 
-        subgraph TOOLS["49 Tool Definitions"]
+        subgraph TOOLS["59 Tool Definitions"]
             direction LR
             PROD["Products\n15 tools"]
             ORD["Orders\n12 tools"]
@@ -812,7 +812,7 @@ src/
 │   └── helpers/        # defineTool, defineResource, definePrompt
 ├── shopify/            # Shopify-specific implementation
 │   ├── client/         # GraphQL client, rate limiter, cache, retry
-│   ├── tools/          # 49 tools across 5 domains
+│   ├── tools/          # 59 tools across 5 domains
 │   ├── resources/      # 4 MCP resources
 │   └── prompts/        # 4 MCP prompts
 ├── server/             # Server bootstrap and registration bridges
@@ -821,7 +821,7 @@ src/
 
 ## How It Compares
 
-49 tools ship enabled out of the box — but the tool count is **unlimited**. Developers can add any Shopify GraphQL operation as a custom tool using simple YAML files, no TypeScript required:
+59 tools ship enabled out of the box — but the tool count is **unlimited**. Developers can add any Shopify GraphQL operation as a custom tool using simple YAML files, no TypeScript required:
 
 ```yaml
 # my-tools/get-metafields.yaml
@@ -871,13 +871,13 @@ COB_SHOPIFY_READ_ONLY=true                 # Disable ALL write operations
 
 | Feature | **cob-shopify-mcp** | GeLi2001 (147⭐) | pashpashpash (35⭐) | antoineschaller (10⭐) | benwmerritt |
 |---------|:---:|:---:|:---:|:---:|:---:|
-| **Tools** | **54** (49 built-in + 5 custom) | 14 | 15 | 22 | 30+ |
+| **Tools** | **64** (59 built-in + 5 custom) | 14 | 15 | 22 | 30+ |
 | **MCP Resources** | **4** | 0 | 0 | 0 | 0 |
 | **MCP Prompts** | **4** | 0 | 0 | 0 | 0 |
 | **Auth methods** | **3** (static, client-creds, OAuth) | 2 | 1 | 1 | 2 |
 | **HTTP Transport** | **Streamable HTTP** | No | No | No | No |
 | **Encrypted Storage** | **JSON + SQLite** | No | No | No | No |
-| **Unit Tests** | **573** | ~2 | minimal | 1 | ~2 |
+| **Unit Tests** | **600** | ~2 | minimal | 1 | ~2 |
 | **Docker** | **Multi-stage** | No | No | No | No |
 | **Rate Limiter** | **Yes** | No | No | No | No |
 | **Query Cache** | **Yes** | No | No | No | No |
