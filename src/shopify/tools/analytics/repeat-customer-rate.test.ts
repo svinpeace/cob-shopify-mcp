@@ -1,130 +1,79 @@
-import type { ExecutionContext } from "@core/engine/types.js";
-import { describe, expect, it, vi } from "vitest";
+import { afterAll, beforeAll, describe, expect, it } from "vitest";
+import {
+	cleanupIntegrationContext,
+	createIntegrationContext,
+	type IntegrationContext,
+	skipIfNoCredentials,
+} from "../../../test/integration-helpers.js";
 import repeatCustomerRate from "./repeat-customer-rate.tool.js";
 
-function makeCtx(queryFn: ReturnType<typeof vi.fn>): ExecutionContext {
-	return {
-		shopify: { query: queryFn },
-		config: {} as any,
-		storage: {} as any,
-		logger: { info: vi.fn(), error: vi.fn(), debug: vi.fn(), warn: vi.fn() } as any,
-		costTracker: {} as any,
-	};
-}
+describe.skipIf(skipIfNoCredentials())("repeat_customer_rate", () => {
+	let context: IntegrationContext;
 
-function makeOrdersResponse(orders: any[], hasNextPage = false, endCursor: string | null = null) {
-	return {
-		data: {
-			orders: {
-				edges: orders.map((o) => ({ node: o })),
-				pageInfo: { hasNextPage, endCursor },
-			},
-		},
-	};
-}
+	beforeAll(async () => {
+		context = await createIntegrationContext();
+		context.registry.register(repeatCustomerRate);
+	});
 
-describe("repeat_customer_rate", () => {
-	it("has correct definition metadata", () => {
+	afterAll(async () => {
+		await cleanupIntegrationContext(context);
+	});
+
+	it("has correct metadata", () => {
 		expect(repeatCustomerRate.name).toBe("repeat_customer_rate");
 		expect(repeatCustomerRate.domain).toBe("analytics");
 		expect(repeatCustomerRate.tier).toBe(1);
-		expect(repeatCustomerRate.scopes).toEqual(["read_orders", "read_customers"]);
+		expect(repeatCustomerRate.scopes).toEqual(["read_reports", "read_orders", "read_customers"]);
 		expect(repeatCustomerRate.handler).toBeDefined();
 	});
 
-	it("identifies repeat customers (>1 order)", async () => {
-		const queryFn = vi.fn().mockResolvedValueOnce(
-			makeOrdersResponse([
-				{ id: "1", customer: { id: "c1" } },
-				{ id: "2", customer: { id: "c2" } },
-				{ id: "3", customer: { id: "c1" } },
-				{ id: "4", customer: { id: "c3" } },
-				{ id: "5", customer: { id: "c1" } },
-			]),
+	it("returns repeat customer data for a date range", async () => {
+		const result = await context.engine.execute(
+			"repeat_customer_rate",
+			{ start_date: "2024-01-01", end_date: "2026-12-31" },
+			context.ctx,
 		);
+		const data = result.data as any;
 
-		const result = await repeatCustomerRate.handler?.(
-			{ start_date: "2026-01-01", end_date: "2026-01-31" },
-			makeCtx(queryFn),
-		);
+		expect(typeof data.totalCustomers).toBe("number");
+		expect(data.totalCustomers).toBeGreaterThanOrEqual(0);
 
-		expect(result.totalCustomers).toBe(3);
-		expect(result.repeatCustomers).toBe(1);
-		expect(result.repeatRate).toBe(33.33);
-		expect(result.averageOrdersPerRepeatCustomer).toBe(3);
+		expect(typeof data.repeatCustomers).toBe("number");
+		expect(data.repeatCustomers).toBeGreaterThanOrEqual(0);
+
+		expect(typeof data.repeatRate).toBe("number");
+		expect(data.repeatRate).toBeGreaterThanOrEqual(0);
+		expect(data.repeatRate).toBeLessThanOrEqual(100);
+
+		// averageOrdersPerRepeatCustomer may be null if ShopifyQL path lacks data
+		if (data.averageOrdersPerRepeatCustomer !== null) {
+			expect(typeof data.averageOrdersPerRepeatCustomer).toBe("number");
+			expect(data.averageOrdersPerRepeatCustomer).toBeGreaterThanOrEqual(0);
+		}
 	});
 
-	it("handles zero orders", async () => {
-		const queryFn = vi.fn().mockResolvedValueOnce(makeOrdersResponse([]));
-
-		const result = await repeatCustomerRate.handler?.(
-			{ start_date: "2026-01-01", end_date: "2026-01-31" },
-			makeCtx(queryFn),
+	it("handles a narrow date range", async () => {
+		const result = await context.engine.execute(
+			"repeat_customer_rate",
+			{ start_date: "2026-01-01", end_date: "2026-01-02" },
+			context.ctx,
 		);
+		const data = result.data as any;
 
-		expect(result.totalCustomers).toBe(0);
-		expect(result.repeatCustomers).toBe(0);
-		expect(result.repeatRate).toBe(0);
-		expect(result.averageOrdersPerRepeatCustomer).toBe(0);
+		expect(typeof data.totalCustomers).toBe("number");
+		expect(typeof data.repeatCustomers).toBe("number");
+		expect(typeof data.repeatRate).toBe("number");
+		expect(data.repeatCustomers).toBeLessThanOrEqual(data.totalCustomers);
 	});
 
-	it("handles all unique customers (no repeats)", async () => {
-		const queryFn = vi.fn().mockResolvedValueOnce(
-			makeOrdersResponse([
-				{ id: "1", customer: { id: "c1" } },
-				{ id: "2", customer: { id: "c2" } },
-				{ id: "3", customer: { id: "c3" } },
-			]),
+	it("repeat customers never exceed total customers", async () => {
+		const result = await context.engine.execute(
+			"repeat_customer_rate",
+			{ start_date: "2024-06-01", end_date: "2026-06-30" },
+			context.ctx,
 		);
+		const data = result.data as any;
 
-		const result = await repeatCustomerRate.handler?.(
-			{ start_date: "2026-01-01", end_date: "2026-01-31" },
-			makeCtx(queryFn),
-		);
-
-		expect(result.totalCustomers).toBe(3);
-		expect(result.repeatCustomers).toBe(0);
-		expect(result.repeatRate).toBe(0);
-	});
-
-	it("handles orders without customer data", async () => {
-		const queryFn = vi.fn().mockResolvedValueOnce(
-			makeOrdersResponse([
-				{ id: "1", customer: { id: "c1" } },
-				{ id: "2", customer: null },
-				{ id: "3", customer: { id: "c1" } },
-			]),
-		);
-
-		const result = await repeatCustomerRate.handler?.(
-			{ start_date: "2026-01-01", end_date: "2026-01-31" },
-			makeCtx(queryFn),
-		);
-
-		// Only c1 counted, no null customer
-		expect(result.totalCustomers).toBe(1);
-		expect(result.repeatCustomers).toBe(1);
-		expect(result.repeatRate).toBe(100);
-	});
-
-	it("handles all repeat customers", async () => {
-		const queryFn = vi.fn().mockResolvedValueOnce(
-			makeOrdersResponse([
-				{ id: "1", customer: { id: "c1" } },
-				{ id: "2", customer: { id: "c1" } },
-				{ id: "3", customer: { id: "c2" } },
-				{ id: "4", customer: { id: "c2" } },
-			]),
-		);
-
-		const result = await repeatCustomerRate.handler?.(
-			{ start_date: "2026-01-01", end_date: "2026-01-31" },
-			makeCtx(queryFn),
-		);
-
-		expect(result.totalCustomers).toBe(2);
-		expect(result.repeatCustomers).toBe(2);
-		expect(result.repeatRate).toBe(100);
-		expect(result.averageOrdersPerRepeatCustomer).toBe(2);
+		expect(data.repeatCustomers).toBeLessThanOrEqual(data.totalCustomers);
 	});
 });

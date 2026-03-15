@@ -5,16 +5,16 @@ import {
 	type IntegrationContext,
 	skipIfNoCredentials,
 } from "../../../test/integration-helpers.js";
-import salesSummary from "./sales-summary.tool.js";
-import topProducts from "./top-products.tool.js";
+import * as analyticsTools from "./index.js";
 
 describe.skipIf(skipIfNoCredentials())("Analytics Integration", () => {
 	let context: IntegrationContext;
 
 	beforeAll(async () => {
 		context = await createIntegrationContext();
-		context.registry.register(salesSummary);
-		context.registry.register(topProducts);
+		for (const tool of Object.values(analyticsTools)) {
+			context.registry.register(tool);
+		}
 	});
 
 	afterAll(async () => {
@@ -57,6 +57,77 @@ describe.skipIf(skipIfNoCredentials())("Analytics Integration", () => {
 			expect(product.productTitle).toBeDefined();
 			expect(typeof product.totalRevenue).toBe("number");
 			expect(typeof product.totalQuantity).toBe("number");
+		}
+	});
+
+	it("sales_by_channel returns channel breakdown", async () => {
+		const result = await context.engine.execute(
+			"sales_by_channel",
+			{ start_date: "2024-01-01", end_date: "2026-12-31", limit: 5 },
+			context.ctx,
+		);
+		const data = result.data as {
+			channels: Array<{
+				channel: string;
+				totalSales: number;
+				netSales: number;
+				orders: number;
+				unitsSold: number;
+			}>;
+			count: number;
+		};
+
+		expect(Array.isArray(data.channels)).toBe(true);
+		expect(typeof data.count).toBe("number");
+
+		if (data.channels.length > 0) {
+			const channel = data.channels[0];
+			expect(typeof channel.channel).toBe("string");
+			expect(typeof channel.totalSales).toBe("number");
+			expect(typeof channel.netSales).toBe("number");
+			expect(typeof channel.orders).toBe("number");
+			expect(typeof channel.unitsSold).toBe("number");
+		}
+	});
+
+	it("sales_comparison returns period comparison data", async () => {
+		const result = await context.engine.execute(
+			"sales_comparison",
+			{
+				start_date: "2026-01-01",
+				end_date: "2026-03-15",
+				compare_to: "previous_period",
+				group_by: "month",
+			},
+			context.ctx,
+		);
+		const data = result.data as {
+			periods: Array<Record<string, string | number | null>>;
+			compareTo: string;
+			count: number;
+		};
+
+		expect(Array.isArray(data.periods)).toBe(true);
+		expect(data.compareTo).toBe("previous_period");
+		expect(typeof data.count).toBe("number");
+	});
+
+	it("shopifyql_query executes raw ShopifyQL passthrough", async () => {
+		const result = await context.engine.execute(
+			"shopifyql_query",
+			{ query: "FROM sales SHOW total_sales SINCE -30d" },
+			context.ctx,
+		);
+		const data = result.data as {
+			data: Array<Record<string, unknown>>;
+			columns: Array<{ name: string }>;
+		};
+
+		expect(Array.isArray(data.data)).toBe(true);
+		expect(Array.isArray(data.columns)).toBe(true);
+
+		if (data.columns.length > 0) {
+			expect(typeof data.columns[0].name).toBe("string");
 		}
 	});
 

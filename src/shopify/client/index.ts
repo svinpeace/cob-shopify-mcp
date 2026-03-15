@@ -4,6 +4,8 @@ export { RateLimiter } from "./rate-limiter.js";
 export type { RetryOptions } from "./retry.js";
 export { withRetry } from "./retry.js";
 export { ShopifyClient } from "./shopify-client.js";
+export type { ShopifyQLColumn, ShopifyQLResult } from "./shopifyql-client.js";
+export { executeShopifyQL } from "./shopifyql-client.js";
 export type {
 	QueryType,
 	ShopifyClientConfig,

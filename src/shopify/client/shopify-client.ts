@@ -18,12 +18,8 @@ export class ShopifyClient {
 		this.cache = new QueryCache();
 	}
 
-	async query(
-		graphql: string,
-		variables?: Record<string, unknown>,
-		queryType?: QueryType,
-	): Promise<ShopifyQueryResult> {
-		const type = queryType ?? "read";
+	async query(graphql: string, variables?: Record<string, unknown>, queryType?: string): Promise<ShopifyQueryResult> {
+		const type = (queryType ?? "read") as QueryType;
 
 		// 1. Check cache (skip for mutations)
 		if (type !== "mutation") {

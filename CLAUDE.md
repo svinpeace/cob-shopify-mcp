@@ -32,7 +32,7 @@ src/
 │   │   ├── orders/         # 12 tools
 │   │   ├── customers/      # 9 tools
 │   │   ├── inventory/      # 7 tools
-│   │   ├── analytics/      # 6 tools
+│   │   ├── analytics/      # 16 tools
 │   │   └── _disabled/      # Tier 2 (billing, payments, themes, etc.)
 │   ├── resources/          # MCP resources
 │   ├── prompts/            # MCP prompt templates
@@ -72,6 +72,7 @@ src/
 - **Cost-based rate limiting:** Reads Shopify's point-based throttle from response `extensions.cost`. Not simple request counting.
 - **Co-located files:** Each tool = `name.tool.ts` + `name.graphql` + `name.test.ts` in the same directory.
 - **Normalized responses:** Never return raw Shopify payloads. Always map edges/nodes to clean JSON.
+- **ShopifyQL analytics:** Analytics tools use ShopifyQL (single API call) instead of cursor pagination. Requires `read_reports` scope.
 
 ## Commands
 
@@ -79,7 +80,7 @@ src/
 pnpm install          # Install dependencies
 pnpm dev              # Start dev server with hot reload
 pnpm build            # Build with tsup (includes action name generation)
-pnpm test             # Run tests with Vitest (573 tests)
+pnpm test             # Run tests with Vitest (600 tests)
 pnpm lint             # Lint with Biome
 pnpm lint:fix         # Auto-fix lint issues
 pnpm generate         # Generate build-time action name map
@@ -101,7 +102,7 @@ Custom YAML tools auto-register as CLI commands under their declared domain (e.g
 
 ## Advertise-and-Activate (MCP only)
 
-Context reduction feature — registers 1 meta-tool (`activate_tools`) instead of 49 tool schemas. AI calls `activate_tools("analytics")` to load only the domain it needs. 82% token reduction.
+Context reduction feature — registers 1 meta-tool (`activate_tools`) instead of 59 tool schemas. AI calls `activate_tools("analytics")` to load only the domain it needs. 82% token reduction.
 
 - **Config:** `tools.advertise_and_activate: true` (default: false)
 - **Env var:** `COB_SHOPIFY_ADVERTISE_AND_ACTIVATE=true`

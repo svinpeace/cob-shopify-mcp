@@ -4,6 +4,19 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.6.0] - 2026-03-15
+
+### Added
+- ShopifyQL client helper (`executeShopifyQL()`) for server-side analytics
+- 10 new analytics tools: sales_by_channel, sales_by_geography, sales_comparison, discount_performance, product_vendor_performance, customer_cohort_analysis, customer_lifetime_value, conversion_funnel, traffic_analytics, shopifyql_query
+- Period-over-period comparison with ShopifyQL COMPARE TO
+- Raw ShopifyQL passthrough tool (Tier 2, disabled by default)
+
+### Changed
+- 5 analytics tools rewritten from cursor pagination to ShopifyQL (single API call): sales_summary, top_products, orders_by_date_range, refund_rate_summary, repeat_customer_rate
+- Analytics tools now require `read_reports` scope instead of `read_orders`
+- Analytics domain expanded from 6 to 16 tools (59 total across all domains)
+
 ## [0.5.0] - 2026-03-15
 
 ### Added

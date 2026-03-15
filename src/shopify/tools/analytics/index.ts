@@ -1,6 +1,16 @@
+export { default as customerCohortAnalysis } from "./customer-cohort-analysis.tool.js";
+export { default as customerLifetimeValue } from "./customer-lifetime-value.tool.js";
+export { default as conversionFunnel } from "./conversion-funnel.tool.js";
+export { default as discountPerformance } from "./discount-performance.tool.js";
 export { default as inventoryRiskReport } from "./inventory-risk-report.tool.js";
 export { default as ordersByDateRange } from "./orders-by-date-range.tool.js";
+export { default as productVendorPerformance } from "./product-vendor-performance.tool.js";
 export { default as refundRateSummary } from "./refund-rate-summary.tool.js";
 export { default as repeatCustomerRate } from "./repeat-customer-rate.tool.js";
+export { default as salesByChannel } from "./sales-by-channel.tool.js";
+export { default as salesByGeography } from "./sales-by-geography.tool.js";
+export { default as salesComparison } from "./sales-comparison.tool.js";
 export { default as salesSummary } from "./sales-summary.tool.js";
+export { default as shopifyqlQuery } from "./shopifyql-query.tool.js";
 export { default as topProducts } from "./top-products.tool.js";
+export { default as trafficAnalytics } from "./traffic-analytics.tool.js";
