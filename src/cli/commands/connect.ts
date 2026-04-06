@@ -16,7 +16,7 @@ export default defineCommand({
 	async run({ args }) {
 		const domain = args.store;
 
-		if (!domain.includes(".myshopify.com")) {
+		if (!domain.endsWith(".myshopify.com")) {
 			consola.error(`Invalid store domain: "${domain}". Expected format: my-store.myshopify.com`);
 			process.exitCode = 1;
 			return;
