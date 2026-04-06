@@ -4,6 +4,20 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.6.2] - 2026-04-06
+
+### Security
+- Fix picomatch ReDoS vulnerability (CVE via extglob quantifiers) — upgraded to 4.0.4
+- Fix picomatch method injection in POSIX character classes — upgraded to 4.0.4
+- Fix path-to-regexp DoS via sequential optional groups — upgraded to 8.4.2
+- Fix path-to-regexp ReDoS via multiple wildcards — upgraded to 8.4.2
+- Fix yaml stack overflow via deeply nested collections — upgraded to 2.8.3
+
+### Changed
+- Bump `@modelcontextprotocol/sdk` from 1.27.1 to 1.29.0
+- Bump `yaml` from 2.8.2 to 2.8.3
+- Add `pnpm.overrides` for transitive dependency security fixes (picomatch, path-to-regexp)
+
 ## [0.6.0] - 2026-03-15
 
 ### Added

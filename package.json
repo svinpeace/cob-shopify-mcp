@@ -1,6 +1,6 @@
 {
 	"name": "cob-shopify-mcp",
-	"version": "0.6.1",
+	"version": "0.6.2",
 	"description": "Production-grade MCP server and CLI tool for Shopify Admin GraphQL API",
 	"type": "module",
 	"engines": {
@@ -28,7 +28,7 @@
 		"typecheck": "tsc --noEmit"
 	},
 	"dependencies": {
-		"@modelcontextprotocol/sdk": "^1.27.1",
+		"@modelcontextprotocol/sdk": "^1.29.0",
 		"@shopify/admin-api-client": "^1.1.2",
 		"@shopify/shopify-api": "^13.0.0",
 		"citty": "^0.2.1",
@@ -37,7 +37,7 @@
 		"dotenv": "^17.3.1",
 		"open": "^11.0.0",
 		"pino": "^10.3.1",
-		"yaml": "^2.8.2",
+		"yaml": "^2.8.3",
 		"zod": "^3.24.2"
 	},
 	"devDependencies": {
@@ -69,6 +69,12 @@
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/svinpeace/cob-shopify-mcp.git"
+	},
+	"pnpm": {
+		"overrides": {
+			"picomatch": ">=4.0.4",
+			"path-to-regexp": ">=8.4.2"
+		}
 	},
 	"files": [
 		"dist",
