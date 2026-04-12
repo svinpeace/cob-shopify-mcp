@@ -4,6 +4,23 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.6.4] - 2026-04-12
+
+### Security
+- Fix Vite `server.fs.deny` bypass with queries (High) — upgraded to 8.0.8
+- Fix Vite arbitrary file read via dev server WebSocket (High) — upgraded to 8.0.8
+- Fix Vite path traversal in optimized deps `.map` handling (Moderate) — upgraded to 8.0.8
+- Fix Hono incorrect IP matching in `ipRestriction()` for IPv4-mapped IPv6 (Moderate) — upgraded to 4.12.12
+- Fix Hono path traversal in `toSSG()` (Moderate) — upgraded to 4.12.12
+- Fix Hono missing cookie name validation in `setCookie()` (Moderate) — upgraded to 4.12.12
+- Fix Hono middleware bypass via repeated slashes in `serveStatic` (Moderate) — upgraded to 4.12.12
+- Fix Hono non-breaking space prefix bypass in `getCookie()` (Moderate) — upgraded to 4.12.12
+- Fix `@hono/node-server` middleware bypass via repeated slashes (Moderate) — upgraded to 1.19.13
+
+### Changed
+- Add `pnpm.overrides` for vite (>=8.0.8), hono (>=4.12.12), @hono/node-server (>=1.19.13)
+- Add vite 8.0.8 as direct devDependency to force patched resolution
+
 ## [0.6.3] - 2026-04-06
 
 ### Security
