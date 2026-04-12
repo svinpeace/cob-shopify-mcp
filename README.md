@@ -888,7 +888,7 @@ COB_SHOPIFY_ENABLE=some_tier2_tool         # Enable specific Tier 2 tools
 COB_SHOPIFY_READ_ONLY=true                 # Disable ALL write operations
 ```
 
-| Feature | **cob-shopify-mcp (9⭐)** | GeLi2001 (147⭐) | pashpashpash (35⭐) | antoineschaller (10⭐) | benwmerritt |
+| Feature | **cob-shopify-mcp (11⭐)** | GeLi2001 (147⭐) | pashpashpash (35⭐) | antoineschaller (10⭐) | benwmerritt |
 |---------|:---:|:---:|:---:|:---:|:---:|
 | **Tools** | **64** (59 built-in + 5 custom) | 14 | 15 | 22 | 30+ |
 | **MCP Resources** | **4** | 0 | 0 | 0 | 0 |
